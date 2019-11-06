@@ -6,6 +6,7 @@
 
 ## 演示效果
   ![image](src/assets/explorer-demo.gif)
+  ![image](src/assets/logo.png)
 
   <video src="src/assets/explorer-demo.mp4" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video>
 
