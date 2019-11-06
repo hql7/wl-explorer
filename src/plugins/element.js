@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { Button, Form, FormItem, Dropdown, DropdownMenu, DropdownItem, Autocomplete, Input, Table, TableColumn, Checkbox, Dialog, Upload, Message, MessageBox, Loading } from 'element-ui'
 
 Vue.use(Button)
+Vue.use(Input)
 Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Dropdown)
