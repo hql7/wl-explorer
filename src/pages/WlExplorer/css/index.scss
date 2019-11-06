@@ -1,0 +1,203 @@
+$dominant_hue: #409EFF; // 主色值
+$dominant_hue_icon: #00abea; // 按钮图标主色值
+.icon-img {
+  // 图标图片大小
+  width: 22px;
+  height: 22px;
+}
+
+// 私有样式区
+.wl-explorer {
+  position: relative;
+  height: 100%;
+  // 头部按钮区 开始
+  .wl-header-btn {
+    padding: 10px;
+    margin: 10px;
+    box-shadow: 6px 6px 15px rgba($color: #000000, $alpha: .3);
+    >.el-form-item {
+      margin-bottom: 0;
+    }
+  }
+  .u-uploading-name {
+    display: inline-block;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    vertical-align: bottom;
+  }
+  .file-show-type {
+    font-size: 20px;
+    cursor: pointer;
+    color: $dominant_hue_icon;
+  }
+  // 头部文件路径区 开始
+  .wl-header-file {
+    margin: 10px;
+    padding: 10px;
+    height: 60px;
+    box-sizing: border-box;
+    // box-shadow: 6px 6px 15px rgba($color: #000000, $alpha: .3);
+    >.el-form-item {
+      float: left;
+      height: 100%;
+      margin-right: 0;
+    }
+  }
+  .file-path-box {
+    width: calc(100% - 390px);
+    padding-right: 10px;
+    .el-form-item__content {
+      width: 100%;
+    }
+  }
+  .file-path-text {
+    -webkit-appearance: none;
+    background-color: #fff;
+    background-image: none;
+    border-radius: 4px;
+    border: 1px solid #dcdfe6;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    color: #606266;
+    display: inline-block;
+    font-size: inherit;
+    height: 36px;
+    line-height: 34px;
+    outline: 0;
+    padding: 0 15px;
+    -webkit-transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+    transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    >.file-path-p {
+      width: calc(100% - 12px);
+      height: 100%;
+      display: inline-block;
+    }
+  }
+  .file-path-img {
+    @extend .icon-img;
+    margin-top: 6px;
+    vertical-align: top;
+  }
+  .file-search-box {
+    width: 260px;
+    padding-right: 10px;
+  }
+  .file-handle-box {
+    width: 110px;
+  }
+  .file-path-handle {
+    padding: 3px 5px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #929292;
+  }
+  .file-search {
+    font-size: 16px;
+    font-weight: 600;
+    color: $dominant_hue_icon;
+  }
+  // 头部文件路径区 结束
+  // 主体内容区
+  .wl-main-scroll {
+    width: 100%;
+    height: calc(100% - 156px);
+    >.el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
+  }
+  // 主体文件列表区
+  .wl-main-list {
+    padding: 0 20px 20px;
+  }
+  .wl-table th {
+    background-color: #f9f9f9;
+    text-align: center;
+    color: #666;
+    font-weight: 600;
+  }
+  .wl-name-col {
+    display: flex;
+    >.namecol-iconbox{
+      width: 25px;
+      height: 25px;
+    }
+    >.namecol-textbox {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .name-col-icon {
+    vertical-align: sub;
+    @extend .icon-img;
+  }
+  .wl-is-folder {
+    cursor: pointer;
+    &:hover {
+      color: $dominant_hue;
+    }
+  }
+  .wl-list {
+    overflow: hidden;
+    text-align: center;
+    >.wl-list-item {
+      position: relative;
+      float: left;
+      padding: 12px;
+      width: 70px;
+      &:hover .wl-checkbox {
+        display: inline-block;
+      }
+    }
+    .wl-checkbox {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .name-col-icon {
+      width: 66px;
+      height: 66px;
+    }
+    .list-item-name {
+      height: 40px;
+      line-height: 20px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      font-size: 12px;
+    }
+  }
+  // 预览弹出区
+  .file-view-components {
+    position: fixed;
+    top: 100px;
+    left: 250px;
+    right: 30px;
+    bottom: 30px;
+    // background: transparent;
+  }
+  // 定义色彩区
+  .c-blue {
+    color: $dominant_hue;
+  }
+  .u-right {
+    float: right;
+  }
+  .u-full {
+    width: 100%;
+  }
+  .u-disabled {
+    color: #dedada;
+    cursor: no-drop;
+  }
+}
