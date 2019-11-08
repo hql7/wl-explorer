@@ -1,16 +1,28 @@
 {
   "name": "wl-explorer",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.1",
+  "author": "weilan<https://github.com/hql7>",
+  "private": false,
+  "main": "lib/wl-explorer.common.js",
+  "bugs": {
+    "url": "https://github.com/hql7/wl-explorer/issues"
+  },
+  "homepage": "https://github.com/hql7/wl-explorer/#readme",
+  "keyword": "SkyDrive Explorer file-manager 文件管理器 资源管理器 云盘网盘操作台 vue element-ui wl-explorer",
+  "description": "一个基于Vue和ElementUi的文件管理器，类云盘操作台 A file manager based on Vue and elementui, similar to the network disk console",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "lib": "vue-cli-service build --target lib --name wl-explorer --dest lib ./src/pages/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "axios": "^0.19.0",
     "core-js": "^3.3.2",
     "element-ui": "^2.4.5",
-    "vue": "^2.6.10"
+    "vue": "^2.6.10",
+    "vue-video-player": "^5.0.2",
+    "wl-vue-select": "^0.4.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",
@@ -24,6 +36,10 @@
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-element": "^1.0.1",
     "vue-template-compiler": "^2.6.10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+git@github.com:hql7/wl-explorer.git"
   },
   "eslintConfig": {
     "root": true,

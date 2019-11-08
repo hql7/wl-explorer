@@ -269,10 +269,10 @@ import uploadItem from "@/components/upload-item"; // 导入导入组件
 import { 
   downloadDataApi, // 8下载数据  
   fileMoveApi, // 9文件夹移动
-} from '@/api/explorer.js';
-import { download } from "@/api/public"; // 导入下载函数
-import { arrayToTree, splicParentsUntil } from "@/util/array"; // 导入组装树函数、拼接路径函数
+} from '@/api';
+import { arrayToTree, splicParentsUntil, download } from "@/util"; // 导入组装树函数、拼接路径函数
 
+const guid = "00000000-0000-0000-0000-000000000000"
 export default {
   name:"wlExplorer",
   components: { submitBtn, fileView, fadeIn, uploadItem },
@@ -321,7 +321,7 @@ export default {
       upload_selected: '', // 所选上传文件目标路径
       explorer_upload_data: {
         bizCode: 'ProjectKnowledgeBase',
-        bizId: _gc_.guid
+        bizId: guid
       }, // 文件上传参数
     }
   },
@@ -415,7 +415,7 @@ export default {
         .then(() => {
           this.$emit('del', this.file_checked_data)
         })
-        .catch(er => {
+        .catch(() => {
           this.$message({
             type: "info",
             message: "已取消删除"
@@ -498,7 +498,7 @@ export default {
       this.file.id = file.id;
       // this.file.path = file.path;
       this.file.path = splicParentsUntil(this.allPath, file);
-      this.path.level = !file.id || file.id === _gc_.guid ? 1 : 2;
+      this.path.level = !file.id || file.id === guid ? 1 : 2;
       this.path.index = -1; // 将步骤从新回到原位
     },
     /**
@@ -513,7 +513,7 @@ export default {
       // this.file.path = file.path;
       this.file.path = splicParentsUntil(this.allPath, file);
       this.self_data = data;
-      this.path.level = !file.id || file.id === _gc_.guid ? 1 : 2;
+      this.path.level = !file.id || file.id === guid ? 1 : 2;
     },
     // 显示可移动目录
     showMoveList(){
@@ -570,7 +570,7 @@ export default {
         this.routerActive(_next, _next.data);
       }else{
         if(this.path.level===1) return;
-        let _pid = this.file.pid !== _gc_.guid ? this.file.pid : '';
+        let _pid = this.file.pid !== guid ? this.file.pid : '';
         let _parent_history = this.path.history.find(i => i.id === _pid);
         if(_parent_history){
           this.path.history.splice(this.path.history.findIndex(i => i.id === _pid), 1);
@@ -648,7 +648,7 @@ export default {
         FolderFileIds: normal_data_file,
       }
       fileMoveApi(_data).then(({data}) => {
-        if(data.StatusCode === _gc_.StatusCode.ok){
+        if(data.StatusCode === 200){
           this.self_data = this.self_data.filter( i => ![...normal_data_folder,...normal_data_file].includes(i.Id))
           this.layout.move = false;
           this.$message({
@@ -881,5 +881,6 @@ export default {
 
 <style lang="scss">
   @import './css/index.css';
+  @import './css/clear.css';
   @import './icons/iconfont.css';
 </style>

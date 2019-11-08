@@ -10,6 +10,10 @@ $dominant_hue_icon: #00abea; // 按钮图标主色值
 .wl-explorer {
   position: relative;
   height: 100%;
+  padding-top: 2px;
+  background: #fff;
+  box-sizing: border-box;
+  border-radius: 4px;
   // 头部按钮区 开始
   .wl-header-btn {
     padding: 10px;
