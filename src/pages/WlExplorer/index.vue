@@ -10,7 +10,6 @@
           删除
         </submit-btn>
         <el-button @click="showUpload">上传文件</el-button>
-        <!-- 不使用按钮预览 <el-button @click="previewFile">在线预览</el-button>-->
         <!-- solt自定义头部按钮区 -->
         <slot name="header-btn"></slot>
       </el-form-item>
@@ -180,18 +179,20 @@
       </ul>
       <!-- 横排型文件列表 -->
     </div>
-    <!-- slot 操作文件夹表单区 -->
-    <slot name="handle-folder"></slot>
     <!-- slot 自定义dom区 -->
     <slot></slot>
     </el-scrollbar>
     <!-- 文件预览区 -->
+    <template v-if="usePreview">
     <file-view
       v-show="layout.view"
       ref="file-view"
       class="file-view-components"
+      :previewType="previewType"
+      :previewOptions="previewOptions"
       @close="layout.view = false"
     ></file-view>
+    </template>
     <!-- 移动文件区 -->
     <el-dialog
       title="移动文件"
@@ -212,6 +213,7 @@
       </span>
     </el-dialog>
     <!-- 文件上传区 -->
+    <template v-if="useUpload">
     <fade-in v-show="layout.upload">
       <h3 class="edit-header">
         上传文件
@@ -234,15 +236,16 @@
           </el-form-item>
           <el-form-item label="导入文件">
             <uploadItem
-              title=""
-              noPadding
-              :reg="false" 
-              :clear="false" 
               ref="upload-item"
-              url="/Api/Doc/File/KnowledgeFolderUploadFile"
-              :options="explorer_upload_data"
+              :reg="uploadReg"
+              :url="uploadUrl"
+              :limit="uploadLimit"
+              :regFuc="uploadRegFuc" 
+              :options="uploadOptions"
+              :headers="uploadHeaders"
+              @beforeUpload="uploadBefore"
               @uploadSuccess="uploadSuccess"
-              @err="load.upload = false"
+              @uploadError="uploadError"
             >
             </uploadItem>
           </el-form-item>
@@ -258,6 +261,7 @@
         </el-button>
       </div>
     </fade-in>
+    </template>
   </div>
 </template>
 
@@ -266,10 +270,6 @@ import submitBtn from '@/components/submit-btn.vue'; // 导入防抖组件
 import fileView from "@/components/file-view.vue"; // 导入预览组件
 import fadeIn from "@/components/fade-in.vue"; // 引入滑入组件
 import uploadItem from "@/components/upload-item"; // 导入导入组件
-import { 
-  downloadDataApi, // 8下载数据  
-  fileMoveApi, // 9文件夹移动
-} from '@/api';
 import { arrayToTree, splicParentsUntil, download } from "@/util"; // 导入组装树函数、拼接路径函数
 
 const guid = "00000000-0000-0000-0000-000000000000"
@@ -319,10 +319,6 @@ export default {
       tree_path: [], // 全部路径树数据
       move_selected: '', // 所选移动文件目标路径
       upload_selected: '', // 所选上传文件目标路径
-      explorer_upload_data: {
-        bizCode: 'ProjectKnowledgeBase',
-        bizId: guid
-      }, // 文件上传参数
     }
   },
   props:{
@@ -330,9 +326,7 @@ export default {
      * 头部更多操作自定义内容
      * 需要包含内容：
      * name: String 每条数据的名字
-     * fn：Function 每条数据自带所需执行函数
-     * id：String 每条数据的id
-     * command: string/number/object 每条数据的指令
+     * command: Function 每条数据的指令
      * disabled: Boolean 每条数据的禁用
      * divided: Boolean 每条数据的显示分割线
      * icon: String 每条数据的图标类名
@@ -352,7 +346,7 @@ export default {
     showBorder: {
       type: Boolean,
       default: true
-    },
+    }, 
     // 文件表格数据
     data: Array,
     // 文件表头数据【[参数：所有el-Table-column Attributes] (https://element.eleme.cn/#/zh-CN/component/table)】
@@ -367,13 +361,45 @@ export default {
     allPath: Array,
     // 校验是否文件夹函数，（row）参数为当前行数据，用于复杂类型，当isFolderFn优先使用计算结果，不存在时使用props配置内的isFolder字段
     isFolderFn: Function,
-    // 私有属性 文件夹类型
-    folderType: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
+    // 是否锁定文件、文件夹函数,true则不可进行操作
+    isLockFn: Function,
+    // 是否使用自带上传组件
+    useUpload: {
+      type: Boolean,
+      default: true
+    },
+    // 上传文件地址
+    uploadUrl: {
+      type: String,
+      default: ""
+    },
+    //  是否校验上传文件
+    uploadReg: {
+      type: Boolean,
+      default: false
+    },
+    // 上传文件前校验函数，应返回Boolean
+    uploadRegFuc: Function,
+    // 上传文件头参数
+    uploadHeaders: Object,
+    // 上传文件参数
+    uploadOptions: Object,
+     // 上传个数限制
+    uploadLimit: Number,
+    // 是否使用自带预览组件
+    usePreview: {
+      type: Boolean,
+      default: true
+    },
+    // 预览文件类型
+    previewType: {
+      type: String,
+      default: 'img'
+    },
+    // 预览文件地址或配置项
+    previewOptions: Object,
+    // 拼接路径配置项
+    splicOptions: Object
   },
   methods: {
     /**
@@ -381,7 +407,7 @@ export default {
      * type: string 添加add 编辑edit
      * auth: boolean 是否只修改权限
      */
-    handleFolder(type, auth = false){
+    handleFolder(type){
       let [_act = null] = this.file_checked_data;
       if(type === 'edit' && (!_act || !_act[this.selfIsFolder])){
         this.$message({
@@ -392,7 +418,7 @@ export default {
         return;
       }
       // 当前文件夹 文件夹操作类型 新增文件夹回调（只用于历史存储）
-      this.$emit('handleFolder', _act, type, auth);
+      this.$emit('handleFolder', _act, type);
       this.closeUpload();
     },
     // 文件夹删除操作
@@ -432,8 +458,6 @@ export default {
         this.showMoveList();
       } else if(val === 'wl-download'){
         this.wlDownload();
-      } else if (val === 'auth'){
-        this.handleFolder('edit', true)
       }
     },
     // 显示文件路径输入框
@@ -447,7 +471,7 @@ export default {
     filePathChange(item){
       if(!this.matched_path){
         this.$confirm
-        .alert(`知识库内找不到"${this.file.path}"。请检查拼写并重试。`,'项目知识库', {
+        .alert(`文件管理器内找不到"${this.file.path}"。请检查拼写并重试。`,'文件资源管理器', {
           confirmButtonText: "确定",
           callback: ()=>{},
           closeOnClickModal: true,
@@ -496,7 +520,6 @@ export default {
       this.self_data = data;
       this.file.pid = file.pid;
       this.file.id = file.id;
-      // this.file.path = file.path;
       this.file.path = splicParentsUntil(this.allPath, file);
       this.path.level = !file.id || file.id === guid ? 1 : 2;
       this.path.index = -1; // 将步骤从新回到原位
@@ -510,7 +533,6 @@ export default {
       this.clearSearchKey();
       this.file.pid = file.pid;
       this.file.id = file.id;
-      // this.file.path = file.path;
       this.file.path = splicParentsUntil(this.allPath, file);
       this.self_data = data;
       this.path.level = !file.id || file.id === guid ? 1 : 2;
@@ -537,21 +559,7 @@ export default {
         })
         return;
       }
-      // 处理文件夹id 文件id
-      let FolderIds = [], FileIds = [];
-      this.file_checked_data.forEach( i => {
-        i[this.selfIsFolder]
-            ? FolderIds.push(i.Id)
-            : FileIds.push(i.Id)
-      })
-      let _data = {
-        Type: 1,
-        FolderIds,
-        FileIds
-      }
-      downloadDataApi(_data).then(res => {
-        download(res)
-      })
+      this.$emit('download', this.file_checked_data, download);
     },
     // 前进后退按钮操作
     pathBtn(type){
@@ -575,7 +583,6 @@ export default {
         if(_parent_history){
           this.path.history.splice(this.path.history.findIndex(i => i.id === _pid), 1);
           this.routerPush(_parent_history, _parent_history.data);
-          // this.routerActive(_parent_history, _parent_history.data);
           return;
         } 
         // 历史记录没有时 从全部路径里找
@@ -597,7 +604,7 @@ export default {
      */
     enterTheLower(row, isFolder){
       if(!isFolder) {
-        this.previewFile(row.FileId);
+        this.previewFile(row);
         return;
       }
       let _children = this.path.history.find(i => i.id === row.Id);
@@ -616,53 +623,19 @@ export default {
     },
     // 文件、文件夹移动
     fileMove(){
-      let cannot_del_data = []; // 收集不可移动数据
-      let normal_data_file = []; // 收集可移动文件
-      let normal_data_folder = []; // 收集可移动文件夹
-      this.file_checked_data.forEach(i => {
-        i.RourceType !== this.folderType.self 
-          ? cannot_del_data.push(i) // 不可移动数据
-          : i[this.selfIsFolder]
-            ? normal_data_folder.push(i.Id) // 可移动文件夹
-            : normal_data_file.push(i.Id) // 可移动文件
-      })
-      // 不可移动数据进行提示
-      if(cannot_del_data.length > 0){
-        let _msg = '<p class="title">以下文件或文件夹不可移动，已自动过滤</p>';
-        cannot_del_data.forEach(i => {
-          _msg += `<p class="msg">${i.Name}</p>`
-        })
-        this.$message({
-          dangerouslyUseHTMLString: true,
-          showClose: true,
-          message: _msg, 
-          duration: 0,
-          type: "warning",
-          customClass: 'mulit-msg',
-        });
-      }
-      // 可移动数据正常移动
-      let _data = {
-        FolderId: this.move_selected[0][this.selfProps.pathId],
-        FolderIds: normal_data_folder,
-        FolderFileIds: normal_data_file,
-      }
-      fileMoveApi(_data).then(({data}) => {
-        if(data.StatusCode === 200){
-          this.self_data = this.self_data.filter( i => ![...normal_data_folder,...normal_data_file].includes(i.Id))
-          this.layout.move = false;
-          this.$message({
-            showClose: true,
-            message: data.Message,
-            type: "success"
-          });
-        }        
+      this.$emit('move', this.move_selected[0],this.file_checked_data, this.load.move);
+      this.$nextTick(()=>{
+        this.layout.move = false;
       })
     },
     // 显示上传界面
     showUpload(){
-      this.layout.upload = true;
-      this.$emit('closeFade');
+      if(this.useUpload){
+        this.layout.upload = true;
+        this.$emit('closeFade');
+      }else {
+        this.$emit('showUpload');
+      }
     },
     // 关闭上传界面
     closeUpload(){
@@ -670,20 +643,23 @@ export default {
     },
     // 文件上传提交操作
     saveUpload(){
-      this.explorer_upload_data.bizId = 
-        this.upload_selected 
-        ? this.upload_selected[0][this.selfProps.pathId]
-        : ''
-      this.$nextTick(()=>{
-        this.$refs["upload-item"].toUpload();
-      })
+      this.$emit('upload', this.file, this.handleUpload)
+    },
+    // 手动上传文件
+    handleUpload(){
+      this.$refs["upload-item"].toUpload();
     },
     // 文件上传成功回调
     uploadSuccess(res){
+      this.$emit('uploadSuccess', res);
       this.closeUpload();
+      if(!res.Data) return;
       let _res_data = res.Data || {};
       if(this.isFolderFn){
         _res_data.isFolder = this.isFolderFn(_res_data);
+      }
+      if(this.isLockFn){
+        _res_data.isLock = this.isLockFn(_res_data);
       }
       if(this.explorer_upload_data.bizId === this.file.id){ 
         this.self_data.push(_res_data); // 当前文件夹上传 当即展示 因对象引用 历史记录也会自动更改
@@ -693,6 +669,15 @@ export default {
       let _act = this.path.history.find(i => i.id === this.explorer_upload_data.bizId);
       if(!_act) return;
       _act.data.push(_res_data);
+    },
+    // 文件上传前回调
+    uploadBefore(file){
+      this.$emit('uploadBefore', file, this.file);
+    },
+    // 文件上传失败回调
+    uploadError(err){
+      this.$emit('uploadError', err);
+      this.load.upload = false;
     },
     // 地址输入框匹配
     pathQuerySearch(queryString, cb){
@@ -712,9 +697,9 @@ export default {
       let _path = ""
       // 文件夹
       if(row[this.selfIsFolder]){
-        _path = row.RourceType === this.folderType.self 
-          ? require('./images/folder@3x.png')
-          : require('./images/file_automatic@3x.png');
+        _path = row[this.selfIsLock] 
+          ? require('./images/file_automatic@3x.png')
+          : require('./images/folder@3x.png');
         return _path;
       }
       // 其他根据后缀类型
@@ -761,9 +746,12 @@ export default {
       this.file.key = '';
     },
     // 预览文件
-    previewFile(id){
+    previewFile(row){
+      this.$emit('preview', row, this.showPreview);
+    },
+    // 打开预览组件
+    showPreview(){
       this.layout.view = true;
-      this.$refs["file-view"].seeData(id);
     },
     // 处理数据变动
     handleDataChange(val){
@@ -771,6 +759,11 @@ export default {
       if(this.isFolderFn){
         _data.forEach(i => {
           i.isFolder = this.isFolderFn(i);
+        })
+      }
+      if(this.isLockFn){
+        _data.forEach(i => {
+          i.isLock = this.isLockFn(i);
         })
       }
       if(this.file.key) {
@@ -803,11 +796,12 @@ export default {
     // 自身配置项
     selfProps(){
       return {
-        isFolder: 'isFolder', // Boolean 用于有布尔值字段表示数据是否文件夹类型的情况,当使用isFolderFn函数时，此处不再需要传
+        isFolder: 'isFolder', // Boolean 用于有布尔值字段表示数据是否文件夹类型的情况,当使用isFolderFn函数时，此参数会被忽略
+        isLock: 'isLock', // Boolean 用于有布尔值字段表示数据是否锁定文件类型的情况,当使用isLockFn函数时，此参数被忽略
         name: 'name', // String 用于显示名称列的字段
         suffix: 'suffix', // String 用于判断后缀或显示文件类型列的字段
         match: 'name', // String 用于设定输入框自动补全的匹配字段
-        splic: false, // Boolean 用于设定输入框自动补全的匹配字段是否需要将match字段和祖先节点拼接
+        splic: true, // Boolean 用于设定输入框自动补全的匹配字段是否需要将match字段和祖先节点拼接
         pathName: 'name', // String 路径数据 显示名称字段
         pathId: 'id', // String 路径数据 id字段
         pathPid: 'pid', // String 路径数据 pid字段
@@ -827,6 +821,10 @@ export default {
     // 将是否文件夹的两种判断方式合并返回
     selfIsFolder(){
       return this.isFolderFn ? 'isFolder' : this.selfProps.isFolder;
+    },
+    // 将是否锁定文件、文件夹的两种判断方式合并返回
+    selfIsLock(){
+      return this.isLockFn ? 'isLock' : this.selfProps.isLock;
     },
     // 当前是否最后一步
     pathIsEnd(){

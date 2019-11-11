@@ -49,20 +49,9 @@ export default {
     };
   },
   props: {
-    /* src: {
-      type: String,
-      required: true
-    },
-    poster: String */
     options: Object
   },
   methods: {
-    onPlayerPlay(player) {
-      // alert("play");
-    },
-    onPlayerPause(player) {
-      // alert("pause");
-    },
     videoClose() {
       this.$emit("closeVideo");
     }

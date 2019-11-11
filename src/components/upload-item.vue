@@ -1,7 +1,5 @@
 <template>
   <div>
-    <!-- 标题区 -->
-    <h3 class="edit-header" v-if="title">{{ title }}</h3>
     <div class="upload-box">
       <!-- 自定义内容区 -->
       <slot></slot>
@@ -69,20 +67,15 @@ export default {
     };
   },
   props: {
-    // 组件标题
-    title: {
-      type: String,
-      default: "上传文件"
-    },
     // 上传头信息
-    headers:Object,
+    headers: Object,
     // 上传地址
     url: {
       type: String,
       default: "" // 通用上传地址
     },
     // 上传参数
-    options: [Object, String],
+    options: Object,
     // 自动上传
     autoUpload: {
       type: Boolean,

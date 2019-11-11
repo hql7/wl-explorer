@@ -1,5 +1,5 @@
 <template>
-  <div class="file-view" v-loading="loading" v-if="show_preview">
+  <div class="file-view" v-loading="loading">
     <!-- 视频播放器组件 -->
     <videoPlayer class="player-item" v-if="selfType == 'video'" :options="video_options" @closeVideo="closePreview"></videoPlayer>
     <!-- 音频播放器 -->
@@ -48,13 +48,8 @@ export default {
     previewOptions: [Object, String],
   },
   methods: {
-    // 预览资料
-    seeData() {
-      this.show_preview = true;        
-    },
     // 关闭预览
     closePreview() {
-      this.show_preview = false;
       this.$emit("close");
     },
   },

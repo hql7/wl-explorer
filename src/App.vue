@@ -22,11 +22,9 @@ import wlExplorer from '@/pages/WlExplorer'; // 导入文件管理器
 import { closeOtherLayout, arrayToTree } from '@/util'; // 导入关闭其他弹出类视图函数
 import { 
   getFileListApi, // 1获取文件夹列表
-  // addFolderApi, // 2新增文件夹
   getAllFoldersApi, // 4获取全部文件夹
   delFileApi, // 6删除文件|文件夹
 } from '@/api'; // 导入接口
-// const guid = '00000000-0000-0000-0000-000000000000';
 const apiok = 200;
 
 export default {

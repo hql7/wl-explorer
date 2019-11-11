@@ -102,13 +102,10 @@ function splicParentsUntil(data, coordinate, options = {
   Splic: 'Name', // 所要拼接字段
   Connector: '\\', // 连接符 
   Id: "Id", // 数据源匹配字段
-  selfId: 'id', // 坐标值与数据源匹配字段
-  ParentId: "ParentId",
   Parents: "Parents",
   IdentityId: "IdentityId",
-  root: "00000000-0000-0000-0000-000000000000"
 }) {
-  let coordinate_item = data.find(i => i[options.Id] === coordinate[options.selfId]);
+  let coordinate_item = data.find(i => i[options.Id] === coordinate[options.Id]);
   if (!coordinate_item) return '';
   if (!coordinate_item[options.Parents]) return coordinate_item[options.Splic];
   let _parents = coordinate_item[options.Parents]
