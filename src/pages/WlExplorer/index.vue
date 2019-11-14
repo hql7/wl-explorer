@@ -178,10 +178,11 @@
         </li>
       </ul>
       <!-- 横排型文件列表 -->
+      <slot name="main"></slot>
     </div>
+    </el-scrollbar>
     <!-- slot 自定义dom区 -->
     <slot></slot>
-    </el-scrollbar>
     <!-- 文件预览区 -->
     <template v-if="usePreview">
     <file-view
@@ -418,7 +419,7 @@ export default {
         return;
       }
       // 当前文件夹 文件夹操作类型 新增文件夹回调（只用于历史存储）
-      this.$emit('handleFolder', _act, type);
+      this.$emit('handleFolder', _act, type, this.file);
       this.closeUpload();
     },
     // 文件夹删除操作

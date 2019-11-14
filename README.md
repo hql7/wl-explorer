@@ -2,7 +2,7 @@
 
 ## 简介
 
-一个基于Vue和ElementUi的文件管理器插件，提供类似某云盘操作台的功能。
+入行三年的小前端带你三天撸一个文件管理器云盘系列：一个基于Vue和ElementUi的文件管理器插件，提供类似某云盘操作台的功能。
 
 ## [在线访问](https://hql7.github.io/) 
 
@@ -78,11 +78,11 @@ Vue.use(wlExplorer);
 | 9 | pid | 路径数据中表示parentId的字段 | pid | String | 
 | 10 | pathChildren | 路径数据中表示children字段 | children | String |
 | 11 | pathDisabled | 路径数据中表示禁用字段 | disabled | String | 
-###  Events
+### Events
 
 | 序号 | 事件名称 | 说明 | 回调参数 |
 | ---- | ---- | ---- | ---- |
-| 1 | handleFolder | 文件夹新增或编辑 | function(act,type)依次为当前选择文件夹、类型`edit`,`add` | 
+| 1 | handleFolder | 文件夹新增或编辑 | function(act,type,file)依次为当前选择文件夹、类型`edit`,`add`、当前的路径信息 | 
 | 2 | del | 删除 | function(data)依次为要删除的数据 | 
 | 3 | search | 获取数据 | function(path, true)依次为当前路径对象、是否需要更新数据（不需要表示存在历史数据） |
 | 4 | download | 下载文件或文件夹 | function(data, cb)依次为选中数据，请求成功后的下载回调函数，使用时将接口设为blob格式，将带请求头的返回值放进cb(res)即可 |
@@ -95,6 +95,11 @@ Vue.use(wlExplorer);
 | 11 | uploadError | 上传失败回调 | function(err)依次为错误信息 |
 | 12 | preview | 预览事件 | function(data, cb)依次为当前选中预览的数据、打开预览组件的回调，应在此处更新预览参数后调用cb()打开预览 |
 
+### Form Methods
+| 方法名 | 说明 | 参数 |
+| ---- | ---- | ---- |
+| updateHistoryData | 更新历史数据，插件有历史时优先使用历史数据，因此非当前路径已经记录历史数据的且数据发生变动时，需手动调用添加 | function(item, val, update) 依次为：发生数据变动的路径信息`Object`（至少存在你`参数7 props里的pathId字段`用于在历史里匹配）；变动后的列表数据`Array`（主要用于新增文件夹或自定义上传时选择了非当前路径时的手动更新，【删除会自动处理】）；是否覆盖性更新`Boolean`（默认为false，当时false时执行数组合并，true时为完整数据覆盖）|
+
 ### Slot
 | 序号 | name | 说明 |
 | ---- | ---- | ---- |
@@ -102,10 +107,13 @@ Vue.use(wlExplorer);
 | 2 | header-dropdown | 头部更多操作slot，建议使用`参数1`的形式 |
 | 3 | table-column-top | 自定义列，位置在`参数6`前,建议使用`参数6`的形式，可以formatter自定义dom |
 | 4 | table-column-bottom | 自定义列，位置在`参数6`后,建议使用`参数6`的形式，可以formatter自定义dom |
-| 5 | - | 不具名slot，可以写任何dom模块 |
+| 5 | main | 在路径操作栏下的列表区 |
+| 6 | - | 不具名slot，可以写任何dom模块 |
 
 
 ## 版本记录
+
+> 0.1.1 优化内置预览组件参数缺省时的错误；文档增加`方法`的说明；优化主slot在列表区的错误，并在列表区增加name为`main`的slot；
 
 > 0.1.0 wl-explorer第一个版本发布
 
@@ -116,4 +124,5 @@ Vue.use(wlExplorer);
   <video src="src/assets/explorer-demo.mp4" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video> -->
 
 ## 待续
+1.  优化预览组件
 

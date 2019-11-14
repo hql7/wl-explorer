@@ -5,8 +5,12 @@ import './plugins/element.js'
 import wl from "wl-vue-select";
 import "wl-vue-select/lib/wl-vue-select.css"
 Vue.use(wl);
-Vue.config.productionTip = false
+// 引入文件管理器
+import wlExplorer from "wl-explorer";
+import "wl-explorer/lib/wl-explorer.css"
+Vue.use(wlExplorer);
 
+Vue.config.productionTip = false
 new Vue({
   render: h => h(App),
 }).$mount('#app')

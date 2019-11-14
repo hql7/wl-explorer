@@ -3,7 +3,7 @@ import request from "@/util/request";
 // 1获取文件夹列表
 function getFileListApi(data) {
   return request({
-    url: "/data/file-list.json",
+    url: "./data/file-list.json",
     data
   });
 }
@@ -11,7 +11,7 @@ function getFileListApi(data) {
 // 2新增文件夹
 function addFolderApi(data) {
   return request({
-    url: "/data/add-file.json",
+    url: "./data/add-file.json",
     data
   });
 }
@@ -19,7 +19,7 @@ function addFolderApi(data) {
 // 4获取全部文件夹
 function getAllFoldersApi(data) {
   return request({
-    url: "/data/file-list-all.json",
+    url: "./data/file-list-all.json",
     data
   });
 }
@@ -27,7 +27,7 @@ function getAllFoldersApi(data) {
 // 6删除文件|文件夹
 function delFileApi(data) {
   return request({
-    url: "/data/del-file.json",
+    url: "./data/del-file.json",
     data
   });
 }
@@ -35,7 +35,7 @@ function delFileApi(data) {
 // 8下载数据
 function downloadDataApi(data) {
   return request({
-    url: "/data/download.text",
+    url: "./data/download.text",
     responseType: "blob",
     data
   });
@@ -44,7 +44,7 @@ function downloadDataApi(data) {
 // 9文件夹移动
 function fileMoveApi(data) {
   return request({
-    url: "/public/data/move-file.json",
+    url: "./data/move-file.json",
     data
   });
 }

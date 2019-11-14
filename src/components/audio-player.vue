@@ -14,16 +14,8 @@
  * time:2018-10-17
  */
 export default {
-  /* data() {
-    return {
-      config: {
-        autoplay: false, // 是否自动播放
-        loop: false,
-      }
-    };
-  }, */
   props: {
-    url: { type: String, required: true }
+    url: String
     // options: Object
   },
   mounted() {

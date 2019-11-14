@@ -17,11 +17,7 @@
 export default {
   name: "pdf-online-emded",
   props: {
-    pdfurl: { type: String, required: true } // pdf链接地址
-    /* is_show_pdf: {
-      type: Boolean,
-      default: false
-    } // pdf开关状态 */
+    pdfurl: String
   },
   mounted() {
     // 绑定键盘事件

@@ -1,13 +1,13 @@
 <template>
   <div class="file-view" v-loading="loading">
     <!-- 视频播放器组件 -->
-    <videoPlayer class="player-item" v-if="selfType == 'video'" :options="video_options" @closeVideo="closePreview"></videoPlayer>
+    <videoPlayer class="player-item" v-if="selfType == 'video'" :options="selfOptions" @closeVideo="closePreview"></videoPlayer>
     <!-- 音频播放器 -->
-    <audio-player class="player-item" v-else-if="selfType == 'audio'" :url="audio_url" @closeAudio="closePreview"></audio-player>
+    <audio-player class="player-item" v-else-if="selfType == 'audio'" :url="selfOptions" @closeAudio="closePreview"></audio-player>
     <!-- pdf预览组件 -->
-    <pdf-online class="player-item" v-else-if="selfType == 'iframe'" :pdfurl="pdf_url" @closePDF="closePreview"></pdf-online>
+    <pdf-online class="player-item" v-else-if="selfType == 'iframe'" :pdfurl="selfOptions" @closePDF="closePreview"></pdf-online>
     <!-- 图片预览 -->
-    <img-online  class="player-item" v-else-if="selfType == 'img'" :url="img_url" @closeImg="closePreview"></img-online>
+    <img-online  class="player-item" v-else-if="selfType == 'img'" :url="selfOptions" @closeImg="closePreview"></img-online>
   </div>
 </template>
 
