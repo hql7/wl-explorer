@@ -101,7 +101,7 @@ function arrayToTree(
 function splicParentsUntil(data, coordinate, options = {
   Splic: 'Name', // 所要拼接字段
   Connector: '\\', // 连接符 
-  Id: "Id", // 数据源匹配字段
+  Id: "Id", // 数据源匹配字段 
   Parents: "Parents",
   IdentityId: "IdentityId",
 }) {
