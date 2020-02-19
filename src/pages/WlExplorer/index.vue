@@ -481,14 +481,14 @@ export default {
         })
         return;
       }
-      let _act_item = this.path.history.find(i => i.id === item.Id);
+      let _act_item = this.path.history.find(i => i.id === item[this.selfProps.pathId]);
       if(_act_item){
         this.routerActive(_act_item, _act_item.data);
       }else{
         this.routerPush({
-          id: item.Id,
-          pid: item.ParentId,
-          path: item.Name,
+          id: item[this.selfProps.pathId],
+          pid: item[this.selfProps.pathPid],
+          path: item[this.selfProps.pathName],
         });
       }
       
@@ -537,6 +537,16 @@ export default {
       this.file.path = splicParentsUntil(this.allPath, file);
       this.self_data = data;
       this.path.level = !file.id || file.id === guid ? 1 : 2;
+    },
+    /**
+     * 手动更新历史记录的数据
+     * id 路径id
+     * data 所有更新的此路径下的完整数据
+     */
+    updateHistoryData(id, data){
+      let _target = this.path.history.find( i => i.id === id);
+      if(!_target) return;
+      _target.data = data;
     },
     // 显示可移动目录
     showMoveList(){
@@ -587,12 +597,12 @@ export default {
           return;
         } 
         // 历史记录没有时 从全部路径里找
-        let _parent = this.selfPathHistory.find(i => i.Id === _pid);
+        let _parent = this.selfPathHistory.find(i => i.id === _pid);
         if(!_parent) return;
         this.routerPush({
-          id: _parent.Id,
-          pid: _parent.ParentId,
-          path: _parent.Name,
+          id: _parent[this.selfProps.pathId],
+          pid: _parent[this.selfProps.pathPid],
+          path: _parent[this.selfProps.pathName],
         });
         
         this.$emit('search', this.file, true)
@@ -608,17 +618,17 @@ export default {
         this.previewFile(row);
         return;
       }
-      let _children = this.path.history.find(i => i.id === row.Id);
+      let _children = this.path.history.find(i => i.id === row[this.selfProps.pathId]);
       if(_children){ // 历史找到子集时
-        this.path.history.splice(this.path.history.findIndex(i => i.id === row.Id), 1);
+        this.path.history.splice(this.path.history.findIndex(i => i.id === row[this.selfProps.pathId]), 1);
         this.routerPush(_children, _children.data);
         return;
       }
       // 历史找不到子集时 请求更新
       this.routerPush({
-          id: row.Id,
-          pid: row.ParentId,
-          path: row.Name,
+          id: row[this.selfProps.pathId],
+          pid: row[this.selfProps.pathPid],
+          path: row[this.selfProps.pathName],
         });
       this.$emit('search', this.file, true);
     },
@@ -840,7 +850,7 @@ export default {
       let _all_path = this.allPath || [];
       if(this.selfProps.splic){
         this.allPath.forEach(i => {
-          i.id = i.Id;
+          i.id = i[this.selfProps.pathId];
           i.value = splicParentsUntil(_all_path, i);
         })
       }else{
