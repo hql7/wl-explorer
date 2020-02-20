@@ -113,6 +113,8 @@ Vue.use(wlExplorer);
 
 ## 版本记录
 
+> 0.1.2 修复部分未按照props设置而写死字段的代码；修复updateHistoryData手动更新历史记录函数缺失问题
+
 > 0.1.1 优化内置预览组件参数缺省时的错误；文档增加`方法`的说明；优化主slot在列表区的错误，并在列表区增加name为`main`的slot；
 
 > 0.1.0 wl-explorer第一个版本发布

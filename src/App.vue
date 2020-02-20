@@ -251,7 +251,7 @@ export default {
                     pid: res_data.ParentId,
                     path: res_data.Name
                   };
-                  this.$refs['wl-explorer-cpt'].updateHistoryData(res_data.ParentId,[res_data]);
+                  this.$refs['wl-explorer-cpt'].updateHistoryData({Id:res_data.ParentId},[res_data]);
                 }
               }else{ // 编辑
                 this.child_act_saved.Name = res_data.Name;
