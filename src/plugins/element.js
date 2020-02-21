@@ -22,3 +22,4 @@ Vue.use(Loading.directive)
 Vue.prototype.$message = Message;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$loading = Loading.service;
+Vue.prototype.$confirm = MessageBox.confirm;
