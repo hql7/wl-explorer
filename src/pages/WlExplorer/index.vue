@@ -22,7 +22,7 @@
           <el-dropdown-item command="wl-move">移动</el-dropdown-item>
           <el-dropdown-item command="wl-download">下载</el-dropdown-item>
           <!-- props自定义头部更多操作 -->
-          <el-dropdown-item 
+          <el-dropdown-item
             v-for="i of selfHeaderDropdown"
             :key="i.id"
             :icon="i.icon"
@@ -57,8 +57,8 @@
           class="u-full"
           ref="file-path-ipt"
           placeholder="请输入文件路径"
-          v-model="file.path" 
-          v-if="layout.edit_path" 
+          v-model="file.path"
+          v-if="layout.edit_path"
           @keyup.enter.native="filePathChange"
           @select="filePathChange"
           :fetch-suggestions="pathQuerySearch">
@@ -71,13 +71,13 @@
         </el-input>
       </el-form-item>
       <el-form-item class="file-handle-box">
-        <i class="iconfont icon-wl-left file-path-handle" 
+        <i class="iconfont icon-wl-left file-path-handle"
           :class="{'u-disabled':pathIsStart}"
           @click="pathBtn('prv')"></i>
-        <i class="iconfont icon-wl-right file-path-handle" 
+        <i class="iconfont icon-wl-right file-path-handle"
           :class="{'u-disabled':pathIsEnd}"
           @click="pathBtn('next')"></i>
-        <i class="iconfont icon-wl-up file-path-handle" 
+        <i class="iconfont icon-wl-up file-path-handle"
           :class="{'u-disabled':path.level===1}"
           @click="pathBtn('top')"></i>
       </el-form-item>
@@ -104,7 +104,7 @@
         </el-table-column>
         <el-table-column
           v-if="showIndex"
-          align="center"          
+          align="center"
           type="index"
           label="序号"
           width="55">
@@ -133,8 +133,8 @@
           <template slot-scope="scope">
             <!-- 非名称列 -->
             <template v-if="i.prop !== selfProps.name">
-              {{ 
-                i.formatter 
+              {{
+                i.formatter
                 ? i.formatter(scope.row, scope.column, scope.row[i.prop],scope.$index)
                 : scope.row[i.prop]
               }}
@@ -144,11 +144,11 @@
               <!-- 不同文件类型图标区 -->
               <div class="namecol-iconbox">
                 <img :src="fileTypeIcon(scope.row)" class="name-col-icon" alt="文件类型图标">
-              </div> 
+              </div>
               <!-- 不同文件类型 显示内容-->
               <div class="namecol-textbox">
-              {{ 
-                i.formatter 
+              {{
+                i.formatter
                 ? i.formatter(scope.row, scope.column, scope.row[i.prop],scope.$index)
                 : scope.row[i.prop]
               }}
@@ -160,16 +160,16 @@
       </el-table>
       <!-- 列表型文件列表 -->
       <ul class="wl-list" v-show="!layout.show_list">
-        <li 
+        <li
           class="wl-list-item wl-is-folder"
-          v-for="(i, idx) in self_data" 
+          v-for="(i, idx) in self_data"
           :key="i.Id">
             <el-checkbox class="wl-checkbox" @change="listItemCheck($event,i)" v-model="i._checked"></el-checkbox>
             <div @click="enterTheLower(i, i[selfIsFolder])">
               <img :src="fileTypeIcon(i)" class="name-col-icon" alt="文件类型图标">
-              <p class="list-item-name" :title="i.Name"> 
-                {{ 
-                  i.formatter 
+              <p class="list-item-name" :title="i.Name">
+                {{
+                  i.formatter
                   ? i.formatter(i, null, i.Name, idx)
                   : i.Name
                 }}
@@ -241,7 +241,7 @@
               :reg="uploadReg"
               :url="uploadUrl"
               :limit="uploadLimit"
-              :regFuc="uploadRegFuc" 
+              :regFuc="uploadRegFuc"
               :options="uploadOptions"
               :headers="uploadHeaders"
               @beforeUpload="uploadBefore"
@@ -272,7 +272,6 @@ import fileView from "@/components/file-view.vue"; // 导入预览组件
 import fadeIn from "@/components/fade-in.vue"; // 引入滑入组件
 import uploadItem from "@/components/upload-item"; // 导入导入组件
 import { arrayToTree, splicParentsUntil, download } from "@/util"; // 导入组装树函数、拼接路径函数
-
 const guid = "00000000-0000-0000-0000-000000000000"
 export default {
   name:"wlExplorer",
@@ -347,7 +346,7 @@ export default {
     showBorder: {
       type: Boolean,
       default: true
-    }, 
+    },
     // 文件表格数据
     data: Array,
     // 文件表头数据【[参数：所有el-Table-column Attributes] (https://element.eleme.cn/#/zh-CN/component/table)】
@@ -433,8 +432,7 @@ export default {
         return;
       }
       // 删除确认
-      this.$confirm
-        .confirm("是否确认删除选中数据？", {
+      this.$confirm("是否确认删除选中数据？", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
@@ -491,7 +489,7 @@ export default {
           path: item[this.selfProps.pathName],
         });
       }
-      
+
       this.$emit('search', this.file, !_act_item);
       this.layout.edit_path = false;
     },
@@ -502,18 +500,18 @@ export default {
         return;
       }
       let _act_item = this.path.history.find(i => i.id === this.file.id);
-      _act_item 
+      _act_item
         ? this.routerActive(_act_item, _act_item.data)
         : this.$emit('search', this.file, true)
     },
     /**
-     * 往历史里添加新的步骤 
+     * 往历史里添加新的步骤
      * file: Object 路径数据{id: 路径id, pid: 父级路径id, path: 路径名}
      * data: Array 当前路径下的数据
      */
     routerPush(file, data = []){
       splicParentsUntil(this.allPath, file);
-      this.clearSearchKey();      
+      this.clearSearchKey();
       this.path.history.push({
         ...file,
         data
@@ -526,7 +524,7 @@ export default {
       this.path.index = -1; // 将步骤从新回到原位
     },
     /**
-     * 处理当前步骤数据 
+     * 处理当前步骤数据
      * file: Object 路径数据{id: 路径id, pid: 父级路径id, path: 路径名}
      * data: Array 当前路径下的数据
      */
@@ -595,7 +593,7 @@ export default {
           this.path.history.splice(this.path.history.findIndex(i => i.id === _pid), 1);
           this.routerPush(_parent_history, _parent_history.data);
           return;
-        } 
+        }
         // 历史记录没有时 从全部路径里找
         let _parent = this.selfPathHistory.find(i => i.id === _pid);
         if(!_parent) return;
@@ -604,7 +602,7 @@ export default {
           pid: _parent[this.selfProps.pathPid],
           path: _parent[this.selfProps.pathName],
         });
-        
+
         this.$emit('search', this.file, true)
       }
     },
@@ -672,7 +670,7 @@ export default {
       if(this.isLockFn){
         _res_data.isLock = this.isLockFn(_res_data);
       }
-      if(this.explorer_upload_data.bizId === this.file.id){ 
+      if(this.explorer_upload_data.bizId === this.file.id){
         this.self_data.push(_res_data); // 当前文件夹上传 当即展示 因对象引用 历史记录也会自动更改
         return;
       }
@@ -708,7 +706,7 @@ export default {
       let _path = ""
       // 文件夹
       if(row[this.selfIsFolder]){
-        _path = row[this.selfIsLock] 
+        _path = row[this.selfIsLock]
           ? require('./images/file_automatic@3x.png')
           : require('./images/folder@3x.png');
         return _path;
