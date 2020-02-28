@@ -9,7 +9,7 @@
     "url": "https://github.com/hql7/wl-explorer/issues"
   },
   "homepage": "https://github.com/hql7/wl-explorer/#readme",
-  "keyword": "SkyDrive Explorer file-manager 文件管理器 资源管理器 云盘网盘操作台 vue element-ui wl-explorer",
+  "keywords": "SkyDrive Explorer Cloud-disk file-manager 文件管理器 资源管理器 云盘 网盘操作台 vue element-ui wl-explorer",
   "description": "一个基于Vue和ElementUi的文件管理器，类云盘操作台 A file manager based on Vue and elementui, similar to the network disk console",
   "scripts": {
     "serve": "vue-cli-service serve",
