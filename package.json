@@ -1,6 +1,6 @@
 {
   "name": "wl-explorer",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "author": "weilan<https://github.com/hql7>",
   "license": "GNU",
   "private": false,
@@ -10,7 +10,7 @@
   },
   "homepage": "https://github.com/hql7/wl-explorer/#readme",
   "keywords": "SkyDrive Explorer Cloud-disk file-manager 文件管理器 资源管理器 云盘 网盘操作台 vue element-ui wl-explorer",
-  "description": "一个基于Vue和ElementUi的文件管理器，类云盘操作台 A file manager based on Vue and elementui, similar to the network disk console",
+  "description": "用于vue框架的文件管理器插件，类云盘，网盘。File manager plug-in for vue framework, cloud disk.  ",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",

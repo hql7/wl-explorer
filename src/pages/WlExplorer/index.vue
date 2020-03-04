@@ -167,11 +167,11 @@
             <el-checkbox class="wl-checkbox" @change="listItemCheck($event,i)" v-model="i._checked"></el-checkbox>
             <div @click="enterTheLower(i, i[selfIsFolder])">
               <img :src="fileTypeIcon(i)" class="name-col-icon" alt="文件类型图标">
-              <p class="list-item-name" :title="i.Name">
+              <p class="list-item-name" :title="i[selfProps.name]">
                 {{
                   i.formatter
-                  ? i.formatter(i, null, i.Name, idx)
-                  : i.Name
+                  ? i.formatter(i, null, i[selfProps.name], idx)
+                  : i[selfProps.name]
                 }}
               </p>
             </div>
@@ -804,6 +804,20 @@ export default {
     },
     // 自身配置项
     selfProps(){
+       console.log({
+        isFolder: 'isFolder', // Boolean 用于有布尔值字段表示数据是否文件夹类型的情况,当使用isFolderFn函数时，此参数会被忽略
+        isLock: 'isLock', // Boolean 用于有布尔值字段表示数据是否锁定文件类型的情况,当使用isLockFn函数时，此参数被忽略
+        name: 'name', // String 用于显示名称列的字段
+        suffix: 'suffix', // String 用于判断后缀或显示文件类型列的字段
+        match: 'name', // String 用于设定输入框自动补全的匹配字段
+        splic: true, // Boolean 用于设定输入框自动补全的匹配字段是否需要将match字段和祖先节点拼接
+        pathName: 'name', // String 路径数据 显示名称字段
+        pathId: 'id', // String 路径数据 id字段
+        pathPid: 'pid', // String 路径数据 pid字段
+        pathChildren: 'children', // String 路径数据 children字段
+        pathDisabled: 'disabled', // String 路径数据 禁用字段
+        ...this.props
+      })
       return {
         isFolder: 'isFolder', // Boolean 用于有布尔值字段表示数据是否文件夹类型的情况,当使用isFolderFn函数时，此参数会被忽略
         isLock: 'isLock', // Boolean 用于有布尔值字段表示数据是否锁定文件类型的情况,当使用isLockFn函数时，此参数被忽略
@@ -818,6 +832,7 @@ export default {
         pathDisabled: 'disabled', // String 路径数据 禁用字段
         ...this.props
       }
+     
     },
     // 自身移动 下拉框树 配置项
     selfMoveProps(){

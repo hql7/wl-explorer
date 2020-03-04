@@ -62,7 +62,7 @@
 </template>
 
 <script>
-// import wlExplorer from '@/pages/WlExplorer'; // 导入文件管理器
+import wlExplorer from '@/pages/WlExplorer'; // 导入文件管理器
 import fadeIn from "@/components/fade-in"; // 导入文件管理器
 import submitBtn from "@/components/submit-btn"; // 导入防抖提交组件
 import { closeOtherLayout, arrayToTree } from "@/util"; // 导入关闭其他弹出类视图函数
@@ -77,8 +77,8 @@ export default {
   name: "app",
   components: {
     fadeIn,
-    submitBtn
-    // wlExplorer
+    submitBtn,
+    wlExplorer
   },
   data() {
     const _GB = 1024 * 1024;
