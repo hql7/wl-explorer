@@ -91,7 +91,7 @@ export default {
         folder: false
       }, // 弹出类视图管理
       headerHandle: [{ name: "权限", command: "auth" }], // 头部按钮更多操作-自定义权限
-      file_table_columns: [
+      /* file_table_columns: [
         {
           label: "名称",
           prop: "Name",
@@ -155,7 +155,44 @@ export default {
             return row.Describe || "-";
           }
         }
-      ], // 自定义表格列
+      ], // 自定义表格列 */
+      file_table_columns:[
+        {
+          label: '名称',
+          prop: 'file_name',
+          minWidth: 120,
+         /*  formatter(row) {
+            console.log(row.file_name)
+            return h('div', row.file_name)
+          } */
+        },
+        {
+          label: '修改日期',
+          align: 'center',
+          width: 120,
+          formatter(row) {
+            if (row.last_modified) {
+              return '' //h('div', moment(row.last_modified).format('YYYY-MM-DD HH:mm:ss'))
+            } else {
+              return ''
+            }
+          }
+        },
+        {
+          label: '类型',
+          align: 'center',
+          width: 90,
+          formatter(row) {
+            return row.type === 'dir' ? '文件夹' : '文件'
+          }
+        },
+        {
+          label: '大小',
+          minWidth: 90,
+          prop: 'size',
+          align: 'center'
+        }
+      ],
       file_table_data: [], // 表格数据
       all_folder_list: [], // 所有文件夹列表
       tree_folder_list: [], // 树形文件夹列表
@@ -210,7 +247,8 @@ export default {
     getFileList() {
       getFileListApi().then(({ data }) => {
         if (data.StatusCode === apiok) {
-          this.file_table_data = data.Data || [];
+          // this.file_table_data = data.Data || [];
+          this.file_table_data = [{"type": "dir", "node": "", "owner": "", "size": "", "last_modified": "Wed, 04 Mar 2020 02:10:28 GMT", "file_name": "dir1", "etag": ""}, {"type": "dir", "node": "", "owner": "", "size": "", "last_modified": "Wed, 04 Mar 2020 03:31:30 GMT", "file_name": "dir2", "etag": ""}, {"type": "file", "node": null, "owner": "test", "size": "0.0KB", "last_modified": "2020-03-03T02:52:57", "file_name": "file1.txt", "etag": "826e8142e6baabe8af779f5f490cf5f5"}]
         }
       });
     },
