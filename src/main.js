@@ -6,9 +6,9 @@ import wl from "wl-vue-select";
 import "wl-vue-select/lib/wl-vue-select.css"
 Vue.use(wl);
 // 引入文件管理器
-import wlExplorer from "wl-explorer";
+import WlExplorer from "wl-explorer";
 import "wl-explorer/lib/wl-explorer.css"
-Vue.use(wlExplorer);
+Vue.use(WlExplorer);
 
 Vue.config.productionTip = false
 new Vue({
