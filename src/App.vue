@@ -77,7 +77,7 @@ export default {
   name: "app",
   components: {
     fadeIn,
-    submitBtn,
+    submitBtn
     // WlExplorer
   },
   data() {
@@ -232,38 +232,45 @@ export default {
       this.child_act_saved = act;
     },
     // 提交文件夹表单
-    submitFolderFrom(formName){
-      this.$refs[formName].validate((valid) => {
+    submitFolderFrom(formName) {
+      this.$refs[formName].validate(valid => {
         if (valid) {
           this.load.folder = true;
-          setTimeout(()=>{
+          setTimeout(() => {
             this.load.folder = false;
             // let res_data = data.Data;
             let res_data = this.folder_form; // 由表单数据模拟服务器返回数据，此处应有服务器返回对应实体
-            res_data.EditTime = res_data.CreateTime = '2019-11-11T11:11:11';
+            res_data.EditTime = res_data.CreateTime = "2019-11-11T11:11:11";
             res_data.Type = 1;
-              if(!this.folder_form.Id){ // 新增
-                if(this.folder_form.ParentId === this.path.id){ // 新增到当前路径
-                  this.file_table_data.unshift(res_data)
-                }else{ // 新增其他路径
-                  let _new_data = {
-                    id: res_data.Id,
-                    pid: res_data.ParentId,
-                    path: res_data.Name
-                  };
-                  this.$refs['wl-explorer-cpt'].updateHistoryData({Id:res_data.ParentId},[res_data]);
-                }
-              }else{ // 编辑
-                this.child_act_saved.Name = res_data.Name;
-                this.child_act_saved.Describe = res_data.Describe;
+            if (!this.folder_form.Id) {
+              // 新增
+              if (this.folder_form.ParentId === this.path.id) {
+                // 新增到当前路径
+                this.file_table_data.unshift(res_data);
+              } else {
+                // 新增其他路径
+                let _new_data = {
+                  id: res_data.Id,
+                  pid: res_data.ParentId,
+                  path: res_data.Name
+                };
+                this.$refs["wl-explorer-cpt"].updateHistoryData(
+                  { Id: res_data.ParentId },
+                  [_new_data]
+                );
               }
-              this.fade.folder = false;
-              this.$message({
-                showClose: true,
-                message: '操作成功',
-                type: "success"
-              });
-          },1000)
+            } else {
+              // 编辑
+              this.child_act_saved.Name = res_data.Name;
+              this.child_act_saved.Describe = res_data.Describe;
+            }
+            this.fade.folder = false;
+            this.$message({
+              showClose: true,
+              message: "操作成功",
+              type: "success"
+            });
+          }, 1000);
         } else {
           return false;
         }
