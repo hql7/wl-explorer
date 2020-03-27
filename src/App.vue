@@ -230,6 +230,7 @@ export default {
         return;
       }
       this.child_act_saved = act;
+      this.folder_form = { ...act };
     },
     // 提交文件夹表单
     submitFolderFrom(formName) {

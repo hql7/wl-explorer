@@ -91,6 +91,8 @@ Vue.use(wlExplorer);
 | 9 | pid | 路径数据中表示parentId的字段 | pid | String | 
 | 10 | pathChildren | 路径数据中表示children字段 | children | String |
 | 11 | pathDisabled | 路径数据中表示禁用字段 | disabled | String | 
+| 12 | size | 设置内部组件大小，同elementui | medium | String |
+
 ### Events
 
 | 序号 | 事件名称 | 说明 | 回调参数 |
@@ -125,6 +127,8 @@ Vue.use(wlExplorer);
 
 
 ## 版本记录
+
+> 0.1.5 增加size参数管理组件内小组件大小
 
 > 0.1.4 修复图标模式，名称字段未使用props配置的错误
 
