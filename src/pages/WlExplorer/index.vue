@@ -6,7 +6,7 @@
       <el-form-item>
         <el-button type="primary" @click="handleFolder('add')">新增文件夹</el-button>
         <el-button :disabled="disabledEditFolder" @click="handleFolder('edit')">编辑文件夹</el-button>
-        <submit-btn type="danger" @btn="handleDel" :status="load.del">删除</submit-btn>
+        <submit-btn type="danger" :size="size" @btn="handleDel" :status="load.del">删除</submit-btn>
         <el-button @click="showUpload">上传文件</el-button>
         <!-- solt自定义头部按钮区 -->
         <slot name="header-btn"></slot>
@@ -59,9 +59,14 @@
       :model="file"
       class="wl-header-file"
       @submit.native.prevent
-      >
+    >
       <el-form-item class="file-path-box">
-        <div class="file-path-text" v-show="!layout.edit_path" @click="handleFilePath">
+        <div
+          class="file-path-text"
+          :class="{small: size=='small'}"
+          v-show="!layout.edit_path"
+          @click="handleFilePath"
+        >
           <img class="file-path-img" src="./images/folder@3x.png" alt="文件夹" title="文件夹" />
           {{file.path}}
         </div>
@@ -120,7 +125,7 @@
           :data="self_data"
           class="wl-table"
           ref="wl-table"
-          >
+        >
           <el-table-column v-if="showCheckbox" align="center" type="selection" width="55"></el-table-column>
           <el-table-column v-if="showIndex" align="center" type="index" label="序号" width="55"></el-table-column>
           <slot name="table-column-top"></slot>

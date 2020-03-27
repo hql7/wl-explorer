@@ -9,6 +9,7 @@
       :folderType="rource_type"
       :data="file_table_data"
       :props="explorer_prop"
+      size="small"
       @handleFolder="handleFolder"
       @search="fileSearch"
       @del="fileDel"
@@ -62,7 +63,7 @@
 </template>
 
 <script>
-// import WlExplorer from '@/pages/WlExplorer'; // 导入文件管理器
+import WlExplorer from '@/pages/WlExplorer'; // 导入文件管理器
 import fadeIn from "@/components/fade-in"; // 导入文件管理器
 import submitBtn from "@/components/submit-btn"; // 导入防抖提交组件
 import { closeOtherLayout, arrayToTree } from "@/util"; // 导入关闭其他弹出类视图函数
@@ -77,8 +78,8 @@ export default {
   name: "app",
   components: {
     fadeIn,
-    submitBtn
-    // WlExplorer
+    submitBtn,
+    WlExplorer
   },
   data() {
     const _GB = 1024 * 1024;

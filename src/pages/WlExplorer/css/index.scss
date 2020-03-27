@@ -1,4 +1,4 @@
-$dominant_hue: #409EFF; // 主色值
+$dominant_hue: #409eff; // 主色值
 $dominant_hue_icon: #00abea; // 按钮图标主色值
 .icon-img {
   // 图标图片大小
@@ -18,8 +18,8 @@ $dominant_hue_icon: #00abea; // 按钮图标主色值
   .wl-header-btn {
     padding: 10px;
     margin: 10px;
-    box-shadow: 6px 6px 15px rgba($color: #000000, $alpha: .3);
-    >.el-form-item {
+    box-shadow: 6px 6px 15px rgba($color: #000000, $alpha: 0.3);
+    > .el-form-item {
       margin-bottom: 0;
     }
   }
@@ -43,7 +43,7 @@ $dominant_hue_icon: #00abea; // 按钮图标主色值
     height: 60px;
     box-sizing: border-box;
     // box-shadow: 6px 6px 15px rgba($color: #000000, $alpha: .3);
-    >.el-form-item {
+    > .el-form-item {
       float: left;
       height: 100%;
       margin-right: 0;
@@ -71,16 +71,23 @@ $dominant_hue_icon: #00abea; // 按钮图标主色值
     line-height: 34px;
     outline: 0;
     padding: 0 15px;
-    -webkit-transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
-    transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+    -webkit-transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    >.file-path-p {
+    > .file-path-p {
       width: calc(100% - 12px);
       height: 100%;
       display: inline-block;
+    }
+  }
+  .file-path-text.small {
+    height: 32px;
+    line-height: 30px;
+    .file-path-img {
+      margin-top: 3px;
     }
   }
   .file-path-img {
@@ -111,7 +118,7 @@ $dominant_hue_icon: #00abea; // 按钮图标主色值
   .wl-main-scroll {
     width: 100%;
     height: calc(100% - 156px);
-    >.el-scrollbar__wrap {
+    > .el-scrollbar__wrap {
       overflow-x: hidden;
     }
   }
@@ -127,11 +134,11 @@ $dominant_hue_icon: #00abea; // 按钮图标主色值
   }
   .wl-name-col {
     display: flex;
-    >.namecol-iconbox{
+    > .namecol-iconbox {
       width: 25px;
       height: 25px;
     }
-    >.namecol-textbox {
+    > .namecol-textbox {
       flex: 1;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -151,7 +158,7 @@ $dominant_hue_icon: #00abea; // 按钮图标主色值
   .wl-list {
     overflow: hidden;
     text-align: center;
-    >.wl-list-item {
+    > .wl-list-item {
       position: relative;
       float: left;
       padding: 12px;
