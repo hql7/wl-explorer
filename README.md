@@ -17,7 +17,7 @@
 
 4. 表格模式、图标模式切换等
 
-## [在线访问](http://wlui.com.cn/) 
+## [在线访问](http://wlui.com.cn/ui/explorer) 
 
 ### 启动
 ```
@@ -157,6 +157,8 @@ Vue.use(wlExplorer);
 
 
 ## 版本记录
+
+> 0.1.6 修改debounce为throttle
 
 > 0.1.5 增加size参数管理组件内小组件大小
 

@@ -48,7 +48,7 @@ export default {
     // 节流输出
     submit: debounce(function() {
       this.$emit("btn");
-    }, 2000)
+    }, 2000, true)
   }
 };
 </script>
