@@ -4,7 +4,7 @@
 
 用于vue框架的文件管理器插件，云盘。File manager plug-in for vue framework, cloud disk.  
 
-入行三年的小前端带你三天撸一个文件管理器云盘系列：一个基于Vue和ElementUi的文件管理器插件，提供类似某云盘操作台的功能。
+一个基于Vue和ElementUi的文件管理器插件，提供类似某云盘操作台的功能。
 
 此组件较为复杂，并且有些设定可能太贴合原来的项目。初次使用建议clone项目做对照，另有q群回复比较及时：1058847321
 
@@ -18,6 +18,36 @@
 4. 表格模式、图标模式切换等
 
 ## [在线访问](http://wlui.com.cn/) 
+
+### 启动
+```
+1. 克隆示例项目
+git clone git@github.com:hql7/wl-explorer.git
+
+2. 下载依赖并运行示例项目
+npm install
+npm run serve
+
+3. 在你的项目上引入wl-explorer
+npm i wl-explorer -S
+// main.js中
+import wlExplorer from "wl-explorer";`
+import "wl-explorer/lib/wl-explorer.css"
+Vue.use(wlExplorer);
+
+4. 运行你的项目，并对照git@github.com:hql7/wl-explorer.git项目示例
+``` 
+> 另一个选择
+```
+1. 克隆集成了wl-explorer组件的wl-admin后台管理系统模板项目
+git clone git@github.com:hql7/wl-admin.git
+
+2. 下载依赖并运行示例项目
+npm install
+npm run serve
+
+3. 在src/views/ui/explorer文件夹下查看mock数据方案的npm install wlExplorer 示例
+```
 
 ## 快速上手
 `npm i wl-explorer -S`
