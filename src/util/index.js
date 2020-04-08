@@ -9,7 +9,7 @@ import { Message } from "element-ui";
 function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result;
 
-  const later = function() {
+  const later = function () {
     // 据上一次触发时间间隔
     const last = +new Date() - timestamp;
 
@@ -26,7 +26,7 @@ function debounce(func, wait, immediate) {
     }
   };
 
-  return function(...args) {
+  return function (...args) {
     context = this;
     timestamp = +new Date();
     const callNow = immediate && !timeout;
@@ -99,25 +99,25 @@ function arrayToTree(
  * @param {*} options 配置项
  */
 function splicParentsUntil(data, coordinate, options = {
-  Splic: 'Name', // 所要拼接字段
-  Connector: '\\', // 连接符 
-  Id: "Id", // 数据源匹配字段 
-  Parents: "Parents",
-  IdentityId: "IdentityId",
+  pathName: 'name', // 所要拼接字段
+  pathConnector: '\\', // 连接符 
+  pathId: "id", // 数据源匹配字段 
+  pathParents: "parents",
+  pathIdentityId: "identityId",
 }) {
-  let coordinate_item = data.find(i => i[options.Id] === coordinate[options.Id]);
+  let coordinate_item = data.find(i => i[options.pathId] === coordinate[options.pathId]);
   if (!coordinate_item) return '';
-  if (!coordinate_item[options.Parents]) return coordinate_item[options.Splic];
-  let _parents = coordinate_item[options.Parents]
-    .substring(1, coordinate_item[options.Parents].length - 1)
+  if (!coordinate_item[options.pathParents]) return coordinate_item[options.pathName];
+  let _parents = coordinate_item[options.pathParents]
+    .substring(1, coordinate_item[options.pathParents].length - 1)
     .split(",")
     .filter(i => !!i);
   let splic_parents = '';
   _parents.forEach(i => {
-    let _parent = data.find(t => t[options.IdentityId] == i);
-    splic_parents += `${_parent[options.Splic]}${options.Connector}`
+    let _parent = data.find(t => t[options.pathIdentityId] == i);
+    splic_parents += `${_parent[options.pathName]}${options.pathConnector}`
   })
-  return splic_parents + coordinate_item[options.Splic];
+  return splic_parents + coordinate_item[options.pathName];
 }
 
 /**
@@ -129,7 +129,7 @@ function download(res) {
   if (res.data.type == "application/json") {
     let reader = new FileReader();
     reader.readAsText(res.data, 'utf-8');
-    reader.onload = function() {
+    reader.onload = function () {
       let json_data = JSON.parse(reader.result);
       Message({
         showClose: true,
@@ -143,9 +143,9 @@ function download(res) {
   let filename = "content-disposition" in res.headers ?
     decodeURIComponent(
       res.headers["content-disposition"]
-      .split(";")[1]
-      .split("=")[1]
-      .replace(/"/g, "")
+        .split(";")[1]
+        .split("=")[1]
+        .replace(/"/g, "")
     ) :
     "下载文件";
   try {

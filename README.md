@@ -105,7 +105,7 @@ Vue.use(wlExplorer);
 | 17 | usePreview | 是否使用自带预览组件【如需要自定义预览组件，在组件内部写dom即可。不具名solt】| Boolean | true | 
 | 18 | previewType | 预览文件类型，'img','video','audio','iframe'(包括txt、html、pdf) | String | img |
 | 19 | previewOptions | 文件预览地址或配置项，除video外只需文件地址即可，video时见video.js配置项{sources: [{type: "video/mp4",src: ''}]} | Object/String | - |
-| 20 | splicOptions | 拼接路径配置项，{Splic: 'Name', Connector: '\\', // 连接符； Id: "Id", // 数据源匹配字段；Parents: "Parents", // 所有父节点自增id以上到下排列逗号分隔；IdentityId: "IdentityId", // 当前自增id} | Object | `{ Splic: 'Name', Connector: '\\',  Id: "Id",  Parents: "Parents", IdentityId: "IdentityId", }` |
+| 20 | splicOptions | 废弃，合并入props拼接路径配置项，{Splic: 要拼接的字段, Connector: '\\', // 连接符； Id: "Id", // 数据源匹配字段；Parents: "Parents", // 所有父节点自增id以上到下排列逗号分隔；IdentityId: "IdentityId", // 当前自增id} | Object | `{ Splic: 'Name', Connector: '\\',  Id: "Id",  Parents: "Parents", IdentityId: "IdentityId", }` |
 
 ### props
 | 序号 | 参数 | 说明 | 默认字段 | 字段值类型 |
@@ -118,10 +118,14 @@ Vue.use(wlExplorer);
 | 6 |  splic | 【特殊字段】配置项中只有此参数为字段值，其他均为字段key，即props里必有一个splic参数表示是否需要将路径名拼接为`父路径\父路径\当前路径`的形式 | Boolean | true |
 | 7 | pathName | 路径数据中表示名称的字段 | name | String |
 | 8 | pathId | 路径数据中表示id字段 | id | String |
-| 9 | pid | 路径数据中表示parentId的字段 | pid | String | 
+| 9 | pathPid | 路径数据中表示parentId的字段 | pid | String | 
 | 10 | pathChildren | 路径数据中表示children字段 | children | String |
 | 11 | pathDisabled | 路径数据中表示禁用字段 | disabled | String | 
-| 12 | size | 设置内部组件大小，同elementui | medium | String |
+| 12 | pathConnector | 路径父子数据拼接连接符,默认为'\' | '\\' | String |
+| 13 | pathParents | 路径数据所有直系祖先节点自增长identityId逗号拼接 | parents | String |
+| 14 | pathIdentityId | 路径数据自增长id | identityId | String |
+| 15 | size | 设置内部组件大小，同elementui | medium | String |
+
 
 ### Events
 
@@ -157,6 +161,8 @@ Vue.use(wlExplorer);
 
 
 ## 版本记录
+
+> 0.1.7 修复文件路径拼接逻辑未采用splicOptions参数的错误，并将splicOptions废弃，合并入props，所有带path前缀的字段
 
 > 0.1.6 修改debounce为throttle
 

@@ -530,7 +530,7 @@ export default {
      * data: Array 当前路径下的数据
      */
     routerPush(file, data = []) {
-      splicParentsUntil(this.allPath, file);
+      splicParentsUntil(this.allPath, file, this.selfProps);
       this.clearSearchKey();
       this.path.history.push({
         ...file,
@@ -539,7 +539,7 @@ export default {
       this.self_data = data;
       this.file.pid = file.pid;
       this.file.id = file.id;
-      this.file.path = splicParentsUntil(this.allPath, file);
+      this.file.path = splicParentsUntil(this.allPath, file, this.selfProps);
       this.path.level = !file.id || file.id === guid ? 1 : 2;
       this.path.index = -1; // 将步骤从新回到原位
     },
@@ -552,7 +552,7 @@ export default {
       this.clearSearchKey();
       this.file.pid = file.pid;
       this.file.id = file.id;
-      this.file.path = splicParentsUntil(this.allPath, file);
+      this.file.path = splicParentsUntil(this.allPath, file, this.selfProps);
       this.self_data = data;
       this.path.level = !file.id || file.id === guid ? 1 : 2;
     },
@@ -860,6 +860,9 @@ export default {
         pathPid: "pid", // String 路径数据 pid字段
         pathChildren: "children", // String 路径数据 children字段
         pathDisabled: "disabled", // String 路径数据 禁用字段
+        pathConnector: "\\", // String 路径父子数据拼接连接符,默认为'\'
+        pathParents: "parents", // String 路径数据所有直系祖先节点自增长identityId逗号拼接
+        pathIdentityId: "identityId", // String 路径数据自增长id
         ...this.props
       };
     },
@@ -895,7 +898,7 @@ export default {
       if (this.selfProps.splic) {
         this.allPath.forEach(i => {
           i.id = i[this.selfProps.pathId];
-          i.value = splicParentsUntil(_all_path, i);
+          i.value = splicParentsUntil(_all_path, i, this.selfProps);
         });
       } else {
         this.allPath.forEach(i => {

@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import WlExplorer from '@/pages/WlExplorer'; // 导入文件管理器
+import WlExplorer from "@/pages/WlExplorer"; // 导入文件管理器
 import fadeIn from "@/components/fade-in"; // 导入文件管理器
 import submitBtn from "@/components/submit-btn"; // 导入防抖提交组件
 import { closeOtherLayout, arrayToTree } from "@/util"; // 导入关闭其他弹出类视图函数
@@ -176,7 +176,11 @@ export default {
         suffix: "SuffixName",
         pathId: "Id",
         pathPid: "ParentId",
-        pathName: "Name"
+        pathName: "Name",
+        pathChildren: "Children", // String 路径数据 children字段
+        pathConnector: "\\", // String 路径父子数据拼接连接符,默认为'\'
+        pathParents: "Parents", // String 路径数据所有直系祖先节点自增长identityId逗号拼接
+        pathIdentityId: "IdentityId" // String 路径数据自增长id
       }, // 文件管理器配置项
       path: {}, // 路径数据
       folder_form: {
