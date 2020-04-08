@@ -159,7 +159,6 @@ Vue.use(wlExplorer);
 | 5 | main | 在路径操作栏下的列表区 |
 | 6 | - | 不具名slot，可以写任何dom模块 |
 
-
 ## 版本记录
 
 > 0.1.7 修复文件路径拼接逻辑未采用splicOptions参数的错误，并将splicOptions废弃，合并入props，所有带path前缀的字段
@@ -177,7 +176,6 @@ Vue.use(wlExplorer);
 > 0.1.0 wl-explorer第一个版本发布
 
 > 0.0.1 初次发布，部分功能未解耦，待续
-
 
 <!-- 
   <video src="src/assets/explorer-demo.mp4" controls="controls" width="500" height="300">您的浏览器不支持播放该视频！</video> -->
