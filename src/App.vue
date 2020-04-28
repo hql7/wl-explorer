@@ -187,7 +187,8 @@ export default {
         ParentId: "",
         Name: "",
         preview: [],
-        handle: []
+        handle: [],
+        Describe: ""
       }, // 文件夹表单
       folder_rules: {
         Name: [{ required: true, message: "请填写文件夹名称", trigger: "blur" }]
