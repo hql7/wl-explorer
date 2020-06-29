@@ -161,6 +161,8 @@ Vue.use(wlExplorer);
 
 ## 版本记录
 
+> 0.1.8 修复上传文件的路径问题
+
 > 0.1.7 修复文件路径拼接逻辑未采用splicOptions参数的错误，并将splicOptions废弃，合并入props，所有带path前缀的字段
 
 > 0.1.6 修改debounce为throttle

@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import { Button, Form, FormItem, Dropdown, DropdownMenu, DropdownItem, Autocomplete, Input, Table, TableColumn, Checkbox, Dialog, Upload, Message, MessageBox, Loading, Scrollbar, Popover, Tree } from 'element-ui'
+import { Button, Form, FormItem, Dropdown, DropdownMenu, DropdownItem, Autocomplete, Input, Table, TableColumn, Checkbox, Dialog, Upload, Message, MessageBox, Loading, Scrollbar, Popover, Tree, Tag } from 'element-ui'
 
 Vue.use(Button)
 Vue.use(Input)
@@ -17,6 +17,7 @@ Vue.use(Popover)
 Vue.use(Tree)
 Vue.use(Upload)
 Vue.use(Scrollbar)
+Vue.use(Tag)
 Vue.use(Loading.directive)
 
 Vue.prototype.$message = Message;

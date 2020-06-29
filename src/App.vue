@@ -11,6 +11,7 @@
       :props="explorer_prop"
       size="small"
       @handleFolder="handleFolder"
+      @upload="fileUpload"
       @search="fileSearch"
       @del="fileDel"
       @closeFade="closeOtherLayout(fade)"
@@ -201,6 +202,12 @@ export default {
     };
   },
   methods: {
+    /**
+     * @name 上传文件提交操作
+     */
+    fileUpload(file,cb){
+      console.log(file,cb)
+    },
     /**
      * 根据关键词搜索文件
      * file: Object 文件属性

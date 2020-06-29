@@ -248,6 +248,7 @@
                 :props="selfMoveProps"
                 :nodeKey="selfProps.pathId"
                 v-model="upload_selected"
+                @change="uploadPathChange"
               ></wlTreeSelect>
             </el-form-item>
             <el-form-item label="导入文件">
@@ -329,7 +330,12 @@ export default {
       matched_path: false, // 路径输入框内是否有匹配到的数据
       tree_path: [], // 全部路径树数据
       move_selected: "", // 所选移动文件目标路径
-      upload_selected: "" // 所选上传文件目标路径
+      upload_selected: "", // 所选上传文件目标路径
+      uoload_data: {
+        pathId: null,
+        parentPathId: null,
+        isCurrentFolder: true
+      } // 上传提交操作抛出的信息
     };
   },
   props: {
@@ -673,6 +679,12 @@ export default {
     },
     // 显示上传界面
     showUpload() {
+      this.upload_selected =  this.file.id;
+      this.uoload_data = {
+        parentPathId: this.file.pid,
+        pathId: this.file.id,
+        isCurrentFolder: true
+      };
       if (this.useUpload) {
         this.layout.upload = true;
         this.$emit("closeFade");
@@ -684,9 +696,18 @@ export default {
     closeUpload() {
       this.layout.upload = false;
     },
+    // 文件上传路径修改
+    uploadPathChange([val]) {
+      const pathId = val[this.selfProps.pathId];
+      this.uoload_data = {
+        parentPathId: val[this.selfProps.pathPid],
+        pathId,
+        isCurrentFolder: pathId == this.file.id
+      };
+    },
     // 文件上传提交操作
     saveUpload() {
-      this.$emit("upload", this.file, this.handleUpload);
+      this.$emit("upload", this.uoload_data, this.handleUpload);
     },
     // 手动上传文件
     handleUpload() {
