@@ -2,7 +2,8 @@
   <div id="app">
     <wlExplorer
       ref="wl-explorer-cpt"
-      :headerDropdown="headerHandle"
+      :header-dropdown="headerHandle"
+      :upload-options="uploadOptions"
       :columns="file_table_columns"
       :all-path="all_folder_list"
       :is-folder-fn="isFolderFn"
@@ -198,15 +199,19 @@ export default {
       tree_select_prop: {
         label: "Name",
         children: "Children"
-      } // 树形下拉框配置项
+      }, // 树形下拉框配置项
+      uploadOptions: {
+        aa: 1212
+      } // 上传文件附加参数
     };
   },
   methods: {
     /**
      * @name 上传文件提交操作
      */
-    fileUpload(file,cb){
-      console.log(file,cb)
+    fileUpload(file, cb) {
+      this.uploadOptions.bb = 1;
+      cb();
     },
     /**
      * 根据关键词搜索文件
