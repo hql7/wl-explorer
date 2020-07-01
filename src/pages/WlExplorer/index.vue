@@ -793,9 +793,9 @@ export default {
       } else if (["xls", "xlsx"].includes(_suffix)) {
         _path = require("./images/file_excel@3x.png");
       } else if (["doc", "docx"].includes(_suffix)) {
-        _path = require("./images/file_pdf@3x.png");
-      } else if ("pdf" == _suffix) {
         _path = require("./images/file_docx@3x.png");
+      } else if ("pdf" == _suffix) {
+        _path = require("./images/file_pdf@3x.png");
       } else if ("ppt" == _suffix) {
         _path = require("./images/file_ppt@3x.png");
       } else if ("txt" == _suffix) {
