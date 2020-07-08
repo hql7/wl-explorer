@@ -13,6 +13,7 @@
       size="small"
       @handleFolder="handleFolder"
       @upload="fileUpload"
+      @download="download"
       @search="fileSearch"
       @del="fileDel"
       @closeFade="closeOtherLayout(fade)"
@@ -212,6 +213,9 @@ export default {
     fileUpload(file, cb) {
       this.uploadOptions.bb = 1;
       cb();
+    },
+    download(data, func) {
+      console.log(data, func);
     },
     /**
      * 根据关键词搜索文件
