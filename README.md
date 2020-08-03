@@ -104,7 +104,7 @@ Vue.use(wlExplorer);
 | 16 | uploadLimit | 最大上传个数 | Number | - |
 | 17 | usePreview | 是否使用自带预览组件【如需要自定义预览组件，在组件内部写dom即可。不具名solt】| Boolean | true | 
 | 18 | previewType | 预览文件类型，'img','video','audio','iframe'(包括txt、html、pdf) | String | img |
-| 19 | previewOptions | 文件预览地址或配置项，除video外只需文件地址即可，video时见video.js配置项{sources: [{type: "video/mp4",src: ''}]} | Object/String | - |
+| 19 | previewOptions | 文件预览地址或配置项，除video外只需`{String}文件链接地址`即可，video时见video.js配置项{sources: [{type: "video/mp4",src: ''}]} | Object/String | - |
 | 20 | splicOptions | 废弃，合并入props拼接路径配置项，{Splic: 要拼接的字段, Connector: '\\', // 连接符； Id: "Id", // 数据源匹配字段；Parents: "Parents", // 所有父节点自增id以上到下排列逗号分隔；IdentityId: "IdentityId", // 当前自增id} | Object | `{ Splic: 'Name', Connector: '\\',  Id: "Id",  Parents: "Parents", IdentityId: "IdentityId", }` |
 
 ### props
