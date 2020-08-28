@@ -24,7 +24,7 @@
     "vue": "^2.6.10",
     "vue-video-player": "^5.0.2",
     "wl-explorer": "^0.1.4",
-    "wl-vue-select": "^0.4.9"
+    "wl-vue-select": "^0.5.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.0.0",

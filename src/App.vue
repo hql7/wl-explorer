@@ -34,14 +34,14 @@
             @keyup.enter.native="submitFolderFrom('folder_form')"
           >
             <el-form-item label="文件路径" prop="ParentId">
-              <wlTreeSelect
+              <WlTreeSelect
                 class="u-full"
                 nodeKey="Id"
                 placeholder="请选择文件路径"
                 :props="tree_select_prop"
                 :data="tree_folder_list"
                 v-model="folder_form.ParentId"
-              ></wlTreeSelect>
+              ></WlTreeSelect>
             </el-form-item>
             <el-form-item label="文件夹名称 " prop="Name">
               <el-input v-model="folder_form.Name" placeholder="请输入文件夹名称"></el-input>
@@ -73,7 +73,7 @@ import { closeOtherLayout, arrayToTree } from "@/util"; // 导入关闭其他弹
 import {
   getFileListApi, // 1获取文件夹列表
   getAllFoldersApi, // 4获取全部文件夹
-  delFileApi // 6删除文件|文件夹
+  delFileApi, // 6删除文件|文件夹
 } from "@/api"; // 导入接口
 const apiok = 200;
 
@@ -82,24 +82,24 @@ export default {
   components: {
     fadeIn,
     submitBtn,
-    WlExplorer
+    WlExplorer,
   },
   data() {
     const _GB = 1024 * 1024;
     // const vm = this;
     return {
       load: {
-        folder: false
+        folder: false,
       }, // loading管理
       fade: {
-        folder: false
+        folder: false,
       }, // 弹出类视图管理
       headerHandle: [{ name: "权限", command: "auth" }], // 头部按钮更多操作-自定义权限
       file_table_columns: [
         {
           label: "名称",
           prop: "Name",
-          minWidth: 120
+          minWidth: 120,
         },
         {
           label: "修改日期",
@@ -107,7 +107,7 @@ export default {
           width: 120,
           formatter(row) {
             return row.EditTime.split("T")[0] || "-";
-          }
+          },
         },
         {
           label: "类型",
@@ -115,7 +115,7 @@ export default {
           width: 90,
           formatter(row) {
             return row.Type === 1 ? "文件夹" : row.SuffixName;
-          }
+          },
         },
         {
           label: "大小",
@@ -134,7 +134,7 @@ export default {
             }
             let _gb = (row.Size / _GB).toFixed(2);
             return parseFloat(_gb) + "GB";
-          }
+          },
         },
         {
           label: "创建日期",
@@ -142,7 +142,7 @@ export default {
           width: 120,
           formatter(row) {
             return row.CreateTime.split("T")[0] || "-";
-          }
+          },
         },
         {
           label: "作者",
@@ -150,15 +150,15 @@ export default {
           align: "center",
           formatter(row) {
             return row.CreateUserName || "-";
-          }
+          },
         },
         {
           label: "描述",
           minWidth: 100,
           formatter(row) {
             return row.Describe || "-";
-          }
-        }
+          },
+        },
       ], // 自定义表格列
       file_table_data: [], // 表格数据
       all_folder_list: [], // 所有文件夹列表
@@ -167,10 +167,10 @@ export default {
         folder: 1,
         img: 2,
         video: 3,
-        other: 4
+        other: 4,
       }, // 文件类型
       rource_type: {
-        self: 1 // 自建
+        self: 1, // 自建
       }, // 数据来源类型
       explorer_prop: {
         name: "Name",
@@ -183,7 +183,7 @@ export default {
         pathChildren: "Children", // String 路径数据 children字段
         pathConnector: "\\", // String 路径父子数据拼接连接符,默认为'\'
         pathParents: "Parents", // String 路径数据所有直系祖先节点自增长identityId逗号拼接
-        pathIdentityId: "IdentityId" // String 路径数据自增长id
+        pathIdentityId: "IdentityId", // String 路径数据自增长id
       }, // 文件管理器配置项
       path: {}, // 路径数据
       folder_form: {
@@ -191,19 +191,24 @@ export default {
         Name: "",
         preview: [],
         handle: [],
-        Describe: ""
+        Describe: "",
       }, // 文件夹表单
       folder_rules: {
-        Name: [{ required: true, message: "请填写文件夹名称", trigger: "blur" }]
+        ParentId: [
+          { required: true, message: "请选择文件路径", trigger: "blur" },
+        ],
+        Name: [
+          { required: true, message: "请填写文件夹名称", trigger: "blur" },
+        ],
       }, // 文件夹表单验证
       child_act_saved: {}, // 存储子组件数据，用于编辑更新
       tree_select_prop: {
         label: "Name",
-        children: "Children"
+        children: "Children",
       }, // 树形下拉框配置项
       uploadOptions: {
-        aa: 1212
-      } // 上传文件附加参数
+        aa: 1212,
+      }, // 上传文件附加参数
     };
   },
   methods: {
@@ -256,7 +261,7 @@ export default {
     },
     // 提交文件夹表单
     submitFolderFrom(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           this.load.folder = true;
           setTimeout(() => {
@@ -275,7 +280,7 @@ export default {
                 let _new_data = {
                   id: res_data.Id,
                   pid: res_data.ParentId,
-                  path: res_data.Name
+                  path: res_data.Name,
                 };
                 this.$refs["wl-explorer-cpt"].updateHistoryData(
                   { Id: res_data.ParentId },
@@ -291,7 +296,7 @@ export default {
             this.$message({
               showClose: true,
               message: "操作成功",
-              type: "success"
+              type: "success",
             });
           }, 1000);
         } else {
@@ -304,7 +309,7 @@ export default {
       let cannot_del_data = []; // 收集不可删除数据
       let normal_data_file = []; // 收集可删除文件
       let normal_data_folder = []; // 收集可删除文件夹
-      data.forEach(i => {
+      data.forEach((i) => {
         i.RourceType !== this.rource_type.self
           ? cannot_del_data.push(i) // 不可删除数据
           : i.Type === this.type.folder
@@ -314,7 +319,7 @@ export default {
       // 不可删除数据进行提示
       if (cannot_del_data.length > 0) {
         let _msg = '<p class="title">以下文件或文件夹不可删除，已自动过滤</p>';
-        cannot_del_data.forEach(i => {
+        cannot_del_data.forEach((i) => {
           _msg += `<p class="msg">${i.Name}</p>`;
         });
         this.$message({
@@ -322,7 +327,7 @@ export default {
           showClose: true,
           message: _msg,
           type: "warning",
-          customClass: "mulit-msg"
+          customClass: "mulit-msg",
         });
       }
       if (normal_data_folder.length === 0 && normal_data_file.length === 0)
@@ -330,17 +335,17 @@ export default {
       // 可删除数据正常删除
       let _data = {
         FolderIds: normal_data_folder,
-        FolderFileIds: normal_data_file
+        FolderFileIds: normal_data_file,
       };
       delFileApi(_data).then(({ data }) => {
         if (data.StatusCode === apiok) {
           this.file_table_data = this.file_table_data.filter(
-            i => ![...normal_data_file, ...normal_data_folder].includes(i.Id)
+            (i) => ![...normal_data_file, ...normal_data_folder].includes(i.Id)
           );
           this.$message({
             showClose: true,
             message: data.Message,
-            type: "success"
+            type: "success",
           });
         }
       });
@@ -354,7 +359,7 @@ export default {
           let options = {
             id: this.explorer_prop.pathId,
             pid: this.explorer_prop.pathPid,
-            children: "Children"
+            children: "Children",
           };
           this.tree_folder_list = arrayToTree(_list, options);
         }
@@ -363,13 +368,13 @@ export default {
     // 判断是否文件夹函数
     isFolderFn(row) {
       return row.Type === this.type.folder;
-    }
+    },
   },
   created() {
     this.closeOtherLayout = closeOtherLayout;
     this.getAllFolders();
     this.getFileList();
-  }
+  },
 };
 </script>
 
