@@ -1,11 +1,11 @@
 .DS_Store
 node_modules
-public
-src
-babel.config.js
-vue.config.js
-yarn.lock
-package.json
+# public
+# src
+# babel.config.js
+# vue.config.js
+# yarn.lock
+# package.json
 
 # local env files
 .env.local
