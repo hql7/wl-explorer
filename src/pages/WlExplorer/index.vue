@@ -1,18 +1,37 @@
 <template>
   <!-- 文件管理器 auth：weilan time：2019-10-25 github：https://github.com/hql7 -->
-  <div class="wl-explorer">
+  <div class="wl-explorer" @contextmenu.prevent>
     <!-- 头部按钮区 -->
-    <el-form class="wl-header-btn" :inline="true" :size="size" @submit.native.prevent>
+    <el-form
+      class="wl-header-btn"
+      :inline="true"
+      :size="size"
+      @submit.native.prevent
+    >
       <el-form-item>
-        <el-button type="primary" @click="handleFolder('add')">新增文件夹</el-button>
-        <el-button :disabled="disabledEditFolder" @click="handleFolder('edit')">编辑文件夹</el-button>
-        <submit-btn type="danger" :size="size" @btn="handleDel" :status="load.del">删除</submit-btn>
+        <el-button type="primary" @click="handleFolder('add')"
+          >新增文件夹</el-button
+        >
+        <el-button :disabled="disabledEditFolder" @click="handleFolder('edit')"
+          >编辑文件夹</el-button
+        >
+        <submit-btn
+          type="danger"
+          :size="size"
+          @btn="handleDel"
+          :status="load.del"
+          >删除</submit-btn
+        >
         <el-button @click="showUpload">上传文件</el-button>
         <!-- solt自定义头部按钮区 -->
         <slot name="header-btn"></slot>
       </el-form-item>
       <el-form-item>
-        <el-dropdown trigger="click" placement="bottom" @command="handleDropdown">
+        <el-dropdown
+          trigger="click"
+          placement="bottom"
+          @command="handleDropdown"
+        >
           <el-button type="primary" plain>
             更多操作
             <i class="el-icon-arrow-down el-icon--right"></i>
@@ -28,7 +47,8 @@
               :command="i.command"
               :divided="i.divided"
               :disabled="i.disabled"
-            >{{i.name}}</el-dropdown-item>
+              >{{ i.name }}</el-dropdown-item
+            >
             <!-- solt自定义头部更多操作 -->
             <slot name="header-dropdown"></slot>
           </el-dropdown-menu>
@@ -36,19 +56,19 @@
       </el-form-item>
       <el-form-item v-show="uploading.ing">
         <span>正在上传：</span>
-        <span class="c-blue u-uploading-name">{{uploading.name}}</span>
-        <span class="c-blue">({{uploading.percentage}}%)</span>
+        <span class="c-blue u-uploading-name">{{ uploading.name }}</span>
+        <span class="c-blue">({{ uploading.percentage }}%)</span>
       </el-form-item>
       <el-form-item class="u-right">
         <i
           class="iconfont icon-wl-list file-show-type"
           v-show="layout.show_list"
-          @click="layout.show_list=!layout.show_list"
+          @click="layout.show_list = !layout.show_list"
         ></i>
         <i
           class="iconfont icon-wl-grid file-show-type"
           v-show="!layout.show_list"
-          @click="layout.show_list=!layout.show_list"
+          @click="layout.show_list = !layout.show_list"
         ></i>
       </el-form-item>
     </el-form>
@@ -63,12 +83,17 @@
       <el-form-item class="file-path-box">
         <div
           class="file-path-text"
-          :class="{small: size=='small'}"
+          :class="{ small: size == 'small' }"
           v-show="!layout.edit_path"
           @click="handleFilePath"
         >
-          <img class="file-path-img" src="./images/folder@3x.png" alt="文件夹" title="文件夹" />
-          {{file.path}}
+          <img
+            class="file-path-img"
+            src="./images/folder@3x.png"
+            alt="文件夹"
+            title="文件夹"
+          />
+          {{ file.path }}
         </div>
         <el-autocomplete
           class="u-full"
@@ -90,24 +115,32 @@
         </el-autocomplete>
       </el-form-item>
       <el-form-item class="file-search-box">
-        <el-input v-model="file.key" placeholder="请输入关键字搜索" @keyup.enter.native="fileSearch()">
-          <el-button slot="append" icon="el-icon-search file-search" @click="fileSearch()"></el-button>
+        <el-input
+          v-model="file.key"
+          placeholder="请输入关键字搜索"
+          @keyup.enter.native="fileSearch()"
+        >
+          <el-button
+            slot="append"
+            icon="el-icon-search file-search"
+            @click="fileSearch()"
+          ></el-button>
         </el-input>
       </el-form-item>
       <el-form-item class="file-handle-box">
         <i
           class="iconfont icon-wl-left file-path-handle"
-          :class="{'u-disabled':pathIsStart}"
+          :class="{ 'u-disabled': pathIsStart }"
           @click="pathBtn('prv')"
         ></i>
         <i
           class="iconfont icon-wl-right file-path-handle"
-          :class="{'u-disabled':pathIsEnd}"
+          :class="{ 'u-disabled': pathIsEnd }"
           @click="pathBtn('next')"
         ></i>
         <i
           class="iconfont icon-wl-up file-path-handle"
-          :class="{'u-disabled':path.level===1}"
+          :class="{ 'u-disabled': path.level === 1 }"
           @click="pathBtn('top')"
         ></i>
       </el-form-item>
@@ -126,8 +159,19 @@
           class="wl-table"
           ref="wl-table"
         >
-          <el-table-column v-if="showCheckbox" align="center" type="selection" width="55"></el-table-column>
-          <el-table-column v-if="showIndex" align="center" type="index" label="序号" width="55"></el-table-column>
+          <el-table-column
+            v-if="showCheckbox"
+            align="center"
+            type="selection"
+            width="55"
+          ></el-table-column>
+          <el-table-column
+            v-if="showIndex"
+            align="center"
+            type="index"
+            label="序号"
+            width="55"
+          ></el-table-column>
           <slot name="table-column-top"></slot>
           <el-table-column
             v-for="i of selfColumns"
@@ -153,9 +197,14 @@
               <!-- 非名称列 -->
               <template v-if="i.prop !== selfProps.name">
                 {{
-                i.formatter
-                ? i.formatter(scope.row, scope.column, scope.row[i.prop],scope.$index)
-                : scope.row[i.prop]
+                  i.formatter
+                    ? i.formatter(
+                        scope.row,
+                        scope.column,
+                        scope.row[i.prop],
+                        scope.$index
+                      )
+                    : scope.row[i.prop]
                 }}
               </template>
               <!-- 名称列 -->
@@ -166,14 +215,23 @@
               >
                 <!-- 不同文件类型图标区 -->
                 <div class="namecol-iconbox">
-                  <img :src="fileTypeIcon(scope.row)" class="name-col-icon" alt="文件类型图标" />
+                  <img
+                    :src="fileTypeIcon(scope.row)"
+                    class="name-col-icon"
+                    alt="文件类型图标"
+                  />
                 </div>
                 <!-- 不同文件类型 显示内容-->
                 <div class="namecol-textbox">
                   {{
-                  i.formatter
-                  ? i.formatter(scope.row, scope.column, scope.row[i.prop],scope.$index)
-                  : scope.row[i.prop]
+                    i.formatter
+                      ? i.formatter(
+                          scope.row,
+                          scope.column,
+                          scope.row[i.prop],
+                          scope.$index
+                        )
+                      : scope.row[i.prop]
                   }}
                 </div>
               </div>
@@ -183,15 +241,28 @@
         </el-table>
         <!-- 列表型文件列表 -->
         <ul class="wl-list" v-show="!layout.show_list">
-          <li class="wl-list-item wl-is-folder" v-for="(i, idx) in self_data" :key="i.Id">
-            <el-checkbox class="wl-checkbox" @change="listItemCheck($event,i)" v-model="i._checked"></el-checkbox>
+          <li
+            class="wl-list-item wl-is-folder"
+            v-for="(i, idx) in self_data"
+            :key="i.Id"
+          >
+            <el-checkbox
+              class="wl-checkbox"
+              :class="{ 'wl-checkbox-checked': i._checked }"
+              @change="listItemCheck($event, i)"
+              v-model="i._checked"
+            ></el-checkbox>
             <div @click="enterTheLower(i, i[selfIsFolder])">
-              <img :src="fileTypeIcon(i)" class="name-col-icon" alt="文件类型图标" />
+              <img
+                :src="fileTypeIcon(i)"
+                class="name-col-icon"
+                alt="文件类型图标"
+              />
               <p class="list-item-name" :title="i[selfProps.name]">
                 {{
-                i.formatter
-                ? i.formatter(i, null, i[selfProps.name], idx)
-                : i[selfProps.name]
+                  i.formatter
+                    ? i.formatter(i, null, i[selfProps.name], idx)
+                    : i[selfProps.name]
                 }}
               </p>
             </div>
@@ -226,7 +297,9 @@
       ></wlTreeSelect>
       <span slot="footer" class="dialog-footer">
         <el-button :size="size" @click="layout.move = false">取 消</el-button>
-        <submit-btn :size="size" @btn="fileMove" :status="load.move">确 定</submit-btn>
+        <submit-btn :size="size" @btn="fileMove" :status="load.move"
+          >确 定</submit-btn
+        >
       </span>
     </el-dialog>
     <!-- 文件上传区 -->
@@ -270,8 +343,12 @@
         </el-scrollbar>
         <!-- 按钮区 -->
         <div class="submit-btn-box">
-          <submit-btn :size="size" @btn="saveUpload()" :status="load.upload">保存</submit-btn>
-          <el-button :size="size" @click="layout.upload = false">取消</el-button>
+          <submit-btn :size="size" @btn="saveUpload()" :status="load.upload"
+            >保存</submit-btn
+          >
+          <el-button :size="size" @click="layout.upload = false"
+            >取消</el-button
+          >
         </div>
       </fade-in>
     </template>
@@ -293,25 +370,25 @@ export default {
       load: {
         del: false, // 删除
         move: false, // 移动
-        upload: false // 上传
+        upload: false, // 上传
       }, // loading状态
       uploading: {
         name: "JS从脱贫到脱发你好长啊",
         percentage: 0,
-        ing: false
+        ing: false,
       }, // 当前上传文件状态
       layout: {
         show_list: true, // 文件展示形式
         edit_path: false, // 是否编辑路径
         view: false, // 预览视图
         move: false, // 移动视图
-        upload: false // 上传视图
+        upload: false, // 上传视图
       }, // 视图管理
       file: {
         pid: "", // 父文件夹
         id: "", // 文件夹id
         path: "", // 文件路径
-        key: "" // 关键字
+        key: "", // 关键字
       }, // 文件相关参数
       path: {
         level: 1, // 当前层级
@@ -321,9 +398,9 @@ export default {
             path: "", // 文件夹名字
             pid: "", // 路径
             id: "", // 文件夹id
-            data: [] // 数据
-          }
-        ] // 历史路径
+            data: [], // 数据
+          },
+        ], // 历史路径
       }, // 记录路径历史
       self_data: [], // 当前数据
       file_checked_data: [], // 列表多选数据
@@ -334,8 +411,8 @@ export default {
       uoload_data: {
         pathId: null,
         parentPathId: null,
-        isCurrentFolder: true
-      } // 上传提交操作抛出的信息
+        isCurrentFolder: true,
+      }, // 上传提交操作抛出的信息
     };
   },
   props: {
@@ -352,17 +429,17 @@ export default {
     // 是否显示复选框
     showCheckbox: {
       type: Boolean,
-      default: true
+      default: true,
     },
     // 是否显示顺序号
     showIndex: {
       type: Boolean,
-      default: true
+      default: true,
     },
     // 表格是否显示边框
     showBorder: {
       type: Boolean,
-      default: true
+      default: true,
     },
     // 文件表格数据
     data: Array,
@@ -383,17 +460,17 @@ export default {
     // 是否使用自带上传组件
     useUpload: {
       type: Boolean,
-      default: true
+      default: true,
     },
     // 上传文件地址
     uploadUrl: {
       type: String,
-      default: ""
+      default: "",
     },
     //  是否校验上传文件
     uploadReg: {
       type: Boolean,
-      default: false
+      default: false,
     },
     // 上传文件前校验函数，应返回Boolean
     uploadRegFuc: Function,
@@ -406,12 +483,12 @@ export default {
     // 是否使用自带预览组件
     usePreview: {
       type: Boolean,
-      default: true
+      default: true,
     },
     // 预览文件类型
     previewType: {
       type: String,
-      default: "img"
+      default: "img",
     },
     // 预览文件地址或配置项
     previewOptions: Object,
@@ -419,8 +496,8 @@ export default {
     splicOptions: Object,
     size: {
       type: String,
-      default: "medium"
-    }
+      default: "medium",
+    },
   },
   methods: {
     /**
@@ -434,7 +511,7 @@ export default {
         this.$message({
           showClose: true,
           message: "请选择文件夹",
-          type: "error"
+          type: "error",
         });
         return;
       }
@@ -448,7 +525,7 @@ export default {
         this.$message({
           showClose: true,
           message: "请选择要删除的文件或文件夹",
-          type: "error"
+          type: "error",
         });
         return;
       }
@@ -456,7 +533,7 @@ export default {
       this.$confirm("是否确认删除选中数据？", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
-        type: "warning"
+        type: "warning",
       })
         .then(() => {
           this.$emit("del", this.file_checked_data);
@@ -464,7 +541,7 @@ export default {
         .catch(() => {
           this.$message({
             type: "info",
-            message: "已取消删除"
+            message: "已取消删除",
           });
         });
     },
@@ -498,13 +575,13 @@ export default {
             callback: () => {},
             closeOnClickModal: true,
             closeOnPressEscape: true,
-            type: "error"
+            type: "error",
           }
         );
         return;
       }
       let _act_item = this.path.history.find(
-        i => i.id === item[this.selfProps.pathId]
+        (i) => i.id === item[this.selfProps.pathId]
       );
       if (_act_item) {
         this.routerActive(_act_item, _act_item.data);
@@ -512,7 +589,7 @@ export default {
         this.routerPush({
           id: item[this.selfProps.pathId],
           pid: item[this.selfProps.pathPid],
-          path: item[this.selfProps.pathName]
+          path: item[this.selfProps.pathName],
         });
       }
 
@@ -525,7 +602,7 @@ export default {
         this.$emit("search", this.file, true);
         return;
       }
-      let _act_item = this.path.history.find(i => i.id === this.file.id);
+      let _act_item = this.path.history.find((i) => i.id === this.file.id);
       _act_item
         ? this.routerActive(_act_item, _act_item.data)
         : this.$emit("search", this.file, true);
@@ -540,7 +617,7 @@ export default {
       this.clearSearchKey();
       this.path.history.push({
         ...file,
-        data
+        data,
       });
       this.self_data = data;
       this.file.pid = file.pid;
@@ -568,7 +645,7 @@ export default {
      * data 所有更新的此路径下的完整数据
      */
     updateHistoryData(id, data) {
-      let _target = this.path.history.find(i => i.id === id);
+      let _target = this.path.history.find((i) => i.id === id);
       if (!_target) return;
       _target.data = data;
     },
@@ -578,7 +655,7 @@ export default {
         this.$message({
           showClose: true,
           message: "请选择要移动的文件或文件夹",
-          type: "error"
+          type: "error",
         });
         return;
       }
@@ -590,7 +667,7 @@ export default {
         this.$message({
           showClose: true,
           message: "请选择要下载的文件或文件夹",
-          type: "error"
+          type: "error",
         });
         return;
       }
@@ -614,22 +691,22 @@ export default {
       } else {
         if (this.path.level === 1) return;
         let _pid = this.file.pid !== guid ? this.file.pid : "";
-        let _parent_history = this.path.history.find(i => i.id === _pid);
+        let _parent_history = this.path.history.find((i) => i.id === _pid);
         if (_parent_history) {
           this.path.history.splice(
-            this.path.history.findIndex(i => i.id === _pid),
+            this.path.history.findIndex((i) => i.id === _pid),
             1
           );
           this.routerPush(_parent_history, _parent_history.data);
           return;
         }
         // 历史记录没有时 从全部路径里找
-        let _parent = this.selfPathHistory.find(i => i.id === _pid);
+        let _parent = this.selfPathHistory.find((i) => i.id === _pid);
         if (!_parent) return;
         this.routerPush({
           id: _parent[this.selfProps.pathId],
           pid: _parent[this.selfProps.pathPid],
-          path: _parent[this.selfProps.pathName]
+          path: _parent[this.selfProps.pathName],
         });
 
         this.$emit("search", this.file, true);
@@ -646,12 +723,14 @@ export default {
         return;
       }
       let _children = this.path.history.find(
-        i => i.id === row[this.selfProps.pathId]
+        (i) => i.id === row[this.selfProps.pathId]
       );
       if (_children) {
         // 历史找到子集时
         this.path.history.splice(
-          this.path.history.findIndex(i => i.id === row[this.selfProps.pathId]),
+          this.path.history.findIndex(
+            (i) => i.id === row[this.selfProps.pathId]
+          ),
           1
         );
         this.routerPush(_children, _children.data);
@@ -661,7 +740,7 @@ export default {
       this.routerPush({
         id: row[this.selfProps.pathId],
         pid: row[this.selfProps.pathPid],
-        path: row[this.selfProps.pathName]
+        path: row[this.selfProps.pathName],
       });
       this.$emit("search", this.file, true);
     },
@@ -679,11 +758,11 @@ export default {
     },
     // 显示上传界面
     showUpload() {
-      this.upload_selected =  this.file.id;
+      this.upload_selected = this.file.id;
       this.uoload_data = {
         parentPathId: this.file.pid,
         pathId: this.file.id,
-        isCurrentFolder: true
+        isCurrentFolder: true,
       };
       if (this.useUpload) {
         this.layout.upload = true;
@@ -702,7 +781,7 @@ export default {
       this.uoload_data = {
         parentPathId: val[this.selfProps.pathPid],
         pathId,
-        isCurrentFolder: pathId == this.file.id
+        isCurrentFolder: pathId == this.file.id,
       };
     },
     // 文件上传提交操作
@@ -731,7 +810,7 @@ export default {
       }
       // 非当前 如在历史记录里已有所选路径 则更新历史记录内的数据
       let _act = this.path.history.find(
-        i => i.id === this.explorer_upload_data.bizId
+        (i) => i.id === this.explorer_upload_data.bizId
       );
       if (!_act) return;
       _act.data.push(_res_data);
@@ -756,7 +835,7 @@ export default {
       cb(results);
     },
     createFilter(queryString) {
-      return restaurant => {
+      return (restaurant) => {
         return (
           restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) ===
           0
@@ -807,8 +886,8 @@ export default {
     },
     // 记录多选列表数据
     filrChecked(val) {
-      this.self_data.forEach(i => (i._checked = false));
-      val.forEach(i => (i._checked = true));
+      this.self_data.forEach((i) => (i._checked = false));
+      val.forEach((i) => (i._checked = true));
       this.file_checked_data = val;
     },
     // 列表模式记录多选数据
@@ -831,12 +910,12 @@ export default {
     handleDataChange(val) {
       let _data = val || [];
       if (this.isFolderFn) {
-        _data.forEach(i => {
+        _data.forEach((i) => {
           i.isFolder = this.isFolderFn(i);
         });
       }
       if (this.isLockFn) {
-        _data.forEach(i => {
+        _data.forEach((i) => {
           i.isLock = this.isLockFn(i);
         });
       }
@@ -844,11 +923,11 @@ export default {
         this.self_data = _data;
         return;
       }
-      let _act = this.path.history.find(i => i.id === this.file.id);
+      let _act = this.path.history.find((i) => i.id === this.file.id);
       if (!_act) return;
       _act.data = _data;
       this.routerActive(_act, _data);
-    }
+    },
   },
   computed: {
     // 自身头部更多操作自定义内容
@@ -884,7 +963,7 @@ export default {
         pathConnector: "\\", // String 路径父子数据拼接连接符,默认为'\'
         pathParents: "parents", // String 路径数据所有直系祖先节点自增长identityId逗号拼接
         pathIdentityId: "identityId", // String 路径数据自增长id
-        ...this.props
+        ...this.props,
       };
     },
     // 自身移动 下拉框树 配置项
@@ -892,7 +971,7 @@ export default {
       return {
         label: this.selfProps.pathName,
         children: this.selfProps.pathChildren,
-        disabled: this.selfProps.pathDisabled
+        disabled: this.selfProps.pathDisabled,
       };
     },
     // 将是否文件夹的两种判断方式合并返回
@@ -917,12 +996,12 @@ export default {
     selfPathHistory() {
       let _all_path = this.allPath || [];
       if (this.selfProps.splic) {
-        this.allPath.forEach(i => {
+        this.allPath.forEach((i) => {
           i.id = i[this.selfProps.pathId];
           i.value = splicParentsUntil(_all_path, i, this.selfProps);
         });
       } else {
-        this.allPath.forEach(i => {
+        this.allPath.forEach((i) => {
           i.value = i[this.selfProps.match];
         });
       }
@@ -934,7 +1013,7 @@ export default {
         this.file_checked_data.length !== 1 ||
         !this.file_checked_data[0][this.selfIsFolder]
       );
-    }
+    },
   },
   watch: {
     // 检测data数据更新列表
@@ -946,16 +1025,16 @@ export default {
       let options = {
         id: this.selfProps.pathId,
         pid: this.selfProps.pathPid,
-        children: this.selfProps.pathChildren
+        children: this.selfProps.pathChildren,
       };
       this.tree_path = arrayToTree(val || [], options);
-    }
+    },
   },
   created() {
     if (this.data && this.data.length > 0) {
       this.handleDataChange(this.data);
     }
-  }
+  },
 };
 </script>
 

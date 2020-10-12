@@ -1,10 +1,10 @@
 {
   "name": "wl-explorer",
-  "version": "0.1.9",
+  "version": "0.2.0",
   "author": "weilan<https://github.com/hql7>",
   "license": "GNU",
   "private": false,
-  "main": "lib/wl-explorer.common.js",
+  "main": "lib/wl-explorer.umd.min.js",
   "bugs": {
     "url": "https://github.com/hql7/wl-explorer/issues"
   },

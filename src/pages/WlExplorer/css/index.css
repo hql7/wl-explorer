@@ -184,7 +184,11 @@
   width: 70px;
 }
 
-.wl-explorer .wl-list > .wl-list-item:hover .wl-checkbox {
+.wl-explorer .wl-list > .wl-list-item:hover > .wl-checkbox {
+  display: inline-block;
+}
+
+.wl-explorer .wl-list > .wl-list-item > .wl-checkbox-checked {
   display: inline-block;
 }
 

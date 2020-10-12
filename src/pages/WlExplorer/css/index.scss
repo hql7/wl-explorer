@@ -163,7 +163,11 @@ $dominant_hue_icon: #00abea; // 按钮图标主色值
       float: left;
       padding: 12px;
       width: 70px;
-      &:hover .wl-checkbox {
+      &:hover > .wl-checkbox {
+        display: inline-block;
+      }
+
+      > .wl-checkbox-checked {
         display: inline-block;
       }
     }
