@@ -452,7 +452,12 @@ export default {
      */
     props: Object,
     // 所有文件路径 用于文件地址输入框自动提示,如不传则使用历史记录
-    allPath: Array,
+    allPath: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
     // 校验是否文件夹函数，（row）参数为当前行数据，用于复杂类型，当isFolderFn优先使用计算结果，不存在时使用props配置内的isFolder字段
     isFolderFn: Function,
     // 是否锁定文件、文件夹函数,true则不可进行操作
