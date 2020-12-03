@@ -92,7 +92,7 @@ Vue.use(wlExplorer);
 | 4 | showBorder | 表格是否显示边框 | Boolean | true |
 | 5 | data | 列表数据【当前只支持一维数据，每次传入当前文件夹数据，但是组件内会记录并更新已经得到数据的文件夹历史，并不过度依赖请求】| Array | - |
 | 6 | columns | 文件列表表头数据 | Array | [所有el-table提供的Table-column Attributes](https://element.eleme.cn/#/zh-CN/component/table) |
-| 7 | props | 配置项 | Object | 详见下方props |
+| 7 | props | 配置项（非常重要，尤其是其中path*参数，是使8.allPath生效的关键属性） | Object | 详见下方props |
 | 8 | allPath | 所有文件路径列表,用于快速访问、移动、上传、新建时 | Array | - |
 | 9 | isFolderFn | 判断是否文件夹函数function(row)参数是当前行数据，函数应返回Boolean值 | Function | - |
 | 10 | isLockFn | 判断是否锁定文件夹函数function(row)参数是当前行数据，函数应返回Boolean值 | Function | - |
@@ -126,6 +126,7 @@ Vue.use(wlExplorer);
 | 14 | pathIdentityId | 路径数据自增长id | identityId | String |
 | 15 | size | 设置内部组件大小，同elementui | medium | String |
 
+> path*字段是allPath生效的关键参数，但是比较晦涩难以理解，建议辅以public/data/file-list-all.json数据结构理解，这些path*字段只是为了支持在此数据结构下的自定义字段名
 
 ### Events
 
